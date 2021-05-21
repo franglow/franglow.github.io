@@ -1,39 +1,73 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
+const { githubApiQuery } = require('./src/utils/github-api');
+
 module.exports = {
   siteMetadata: {
-    title: "fran-web-site",
+    title: `Fran's web site`,
+    siteUrl: 'https://franglow.github.io/',
+    description: 'This is an awesome personal website!',
+    bioplus:
+      'At the moment my focus is on the awesome framework Gatsby which this website is based on. Please check the projects below through which I was improving my JavaScript skills during the past months.',
   },
   plugins: [
     {
-      resolve: "gatsby-source-sanity",
+      resolve: '@chakra-ui/gatsby-plugin',
       options: {
-        projectId: "lti7clh9",
-        dataset: "",
+        /**
+         * @property {boolean} [resetCSS=true]
+         * if false, this plugin will not use `<CSSReset />
+         */
+        resetCSS: true,
+        /**
+         * @property {boolean} [isUsingColorMode=true]
+         * if false, this plugin will not use <ColorModeProvider />
+         */
+        isUsingColorMode: true,
       },
     },
-    "gatsby-plugin-image",
     {
-      resolve: "gatsby-plugin-google-analytics",
+      resolve: `gatsby-source-github-api`,
       options: {
-        trackingId: "",
+        url: 'https://api.github.com/graphql', // default Github GraphQL v4 API endpoint
+
+        // token: required by the GitHub API
+        token: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
+
+        // GraphQLquery: defaults to a search query
+        graphQLQuery: githubApiQuery,
+
+        // variables: defaults to variables needed for a search query
+        variables: {
+          github_login: process.env.GITHUB_LOGIN,
+        },
       },
     },
-    "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sitemap",
+    // {
+    //   resolve: "gatsby-source-sanity",
+    //   options: {
+    //     projectId: "lti7clh9",
+    //     dataset: "production",
+    //   },
+    // },
+    'gatsby-plugin-image',
     {
-      resolve: "gatsby-plugin-manifest",
+      resolve: 'gatsby-plugin-google-analytics',
       options: {
-        icon: "src/images/icon.png",
+        trackingId: 'G-37CE0B5M7Y',
       },
     },
-    "gatsby-plugin-sharp",
-    "gatsby-transformer-sharp",
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "images",
-        path: "./src/images/",
+        name: 'images',
+        path: './src/images/',
       },
-      __key: "images",
+      __key: 'images',
     },
   ],
 };
