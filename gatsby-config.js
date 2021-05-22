@@ -6,7 +6,7 @@ const { githubApiQuery } = require('./src/utils/github-api');
 module.exports = {
   siteMetadata: {
     title: `Fran's web site`,
-    siteUrl: 'https://franglow.github.io/',
+    siteUrl: `https://franglow.github.io/`,
     description: 'This is an awesome personal website!',
     bioplus:
       'At the moment my focus is on the awesome framework Gatsby which this website is based on. Please check the projects below through which I was improving my JavaScript skills during the past months.',
@@ -44,13 +44,13 @@ module.exports = {
         },
       },
     },
-    // {
-    //   resolve: "gatsby-source-sanity",
-    //   options: {
-    //     projectId: "lti7clh9",
-    //     dataset: "production",
-    //   },
-    // },
+    {
+      resolve: 'gatsby-source-sanity',
+      options: {
+        projectId: 'lti7clh9',
+        dataset: 'production',
+      },
+    },
     'gatsby-plugin-image',
     {
       resolve: 'gatsby-plugin-google-analytics',
