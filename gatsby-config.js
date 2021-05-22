@@ -44,13 +44,13 @@ module.exports = {
         },
       },
     },
-    {
-      resolve: 'gatsby-source-sanity',
-      options: {
-        projectId: 'lti7clh9',
-        dataset: 'production',
-      },
-    },
+    // {
+    //   resolve: 'gatsby-source-sanity',
+    //   options: {
+    //     projectId: 'lti7clh9',
+    //     dataset: 'production',
+    //   },
+    // },
     'gatsby-plugin-image',
     {
       resolve: 'gatsby-plugin-google-analytics',
