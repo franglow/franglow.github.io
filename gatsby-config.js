@@ -44,13 +44,6 @@ module.exports = {
         },
       },
     },
-    // {
-    //   resolve: 'gatsby-source-sanity',
-    //   options: {
-    //     projectId: 'lti7clh9',
-    //     dataset: 'production',
-    //   },
-    // },
     'gatsby-plugin-image',
     {
       resolve: 'gatsby-plugin-google-analytics',
@@ -61,13 +54,5 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
-    // {
-    //   resolve: 'gatsby-source-filesystem',
-    //   options: {
-    //     name: 'images',
-    //     path: './src/images/',
-    //   },
-    //   __key: 'images',
-    // },
   ],
 };
