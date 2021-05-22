@@ -27,3 +27,7 @@
     For more info about how to edit this web site locally you could chek at the Gatsby docs.
 
     - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+
+5.  Deploy statys
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/199d05a4-6e9a-433e-9f12-5b99146bb7e1/deploy-status)](https://app.netlify.com/sites/francortez/deploys)
