@@ -41,7 +41,7 @@ module.exports = {
 
         // variables: defaults to variables needed for a search query
         variables: {
-          github_login: process.env.GITHUB_LOGIN,
+          github_login: 'franglow',
         },
       },
     },
