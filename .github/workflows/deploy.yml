@@ -31,12 +31,12 @@ jobs:
       # Building the site (static web pages)
       - name: Gatsby Build
         run: gatsby build
+        env:
+          GOOGLE_ANALYTICS: ${{ secrets.GOOGLE_ANALYTICS }}
 
       # Copy all files from the build folder to the master branch
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        env:
-          GOOGLE_ANALYTICS: ${{ secrets.GOOGLE_ANALYTICS }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
