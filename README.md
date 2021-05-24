@@ -1,5 +1,3 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/199d05a4-6e9a-433e-9f12-5b99146bb7e1/deploy-status)](https://app.netlify.com/sites/francortez/deploys)
-
 1.  **Personal website created as a Gatsby site.**
 
     Bootstrapped with.
