@@ -32,6 +32,8 @@ jobs:
       - name: Gatsby Build
         run: gatsby build
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_LOGIN: ${{ secrets.GITHUB_LOGIN }}
           GOOGLE_ANALYTICS: ${{ secrets.GOOGLE_ANALYTICS }}
 
       # Copy all files from the build folder to the master branch
