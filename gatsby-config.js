@@ -9,7 +9,7 @@ module.exports = {
     siteUrl: `https://franglow.github.io/`,
     description: 'This is an awesome personal website!',
     bioplus:
-      'At the moment my focus is on the awesome framework Gatsby which this website is based on. Please check the projects below through which I was improving my JavaScript skills during the past months.',
+      'At the moment my focus is on the awesome framework Gatsby which this website is based on and GraphQL. Please check the projects below through which I was improving my JavaScript skills during the past months.',
   },
   flags: { PRESERVE_FILE_DOWNLOAD_CACHE: true, PRESERVE_WEBPACK_CACHE: true },
   plugins: [
