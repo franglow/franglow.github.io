@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fran Cortez — Frontend & Product Engineer</title>
+  <meta name="description" content="Fran Cortez, Frontend & Product Engineer in Berlin. This page shows what your browser tells every site you visit — computed on your device, never sent anywhere.">
+  <meta name="theme-color" content="#0f1440">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap">
+
+  <script>
+    // Decide before first paint whether the intro plays, so the page never flashes.
+    (function () {
+      var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var force = /[?&]intro\b/.test(location.search);
+      var seen = false;
+      try { seen = sessionStorage.getItem('lab:intro') === '1'; } catch (e) {}
+      var root = document.documentElement;
+      root.classList.add('js');
+      if (!reduced && (force || !seen)) root.classList.add('is-intro');
+    })();
+  </script>
+
+  <style>
+    :root {
+      --navy: oklch(0.22 0.07 268);
+      --navy-2: oklch(0.26 0.07 268);
+      --black: oklch(0.13 0.012 268);
+      --mint: oklch(0.83 0.14 160);
+      --white: oklch(0.98 0.006 160);
+      --muted: oklch(0.76 0.03 255);
+      --line: color-mix(in oklch, var(--mint) 22%, transparent);
+
+      --display: "Archivo", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --gutter: max(16px, 4vw);
+
+      color-scheme: dark;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--display);
+      font-stretch: 100%;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+    }
+    a { color: inherit; }
+    ::selection { background: var(--mint); color: var(--navy); }
+    :focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
+
+    .wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: var(--gutter); }
+    .mono { font-family: var(--mono); font-size: .8125rem; letter-spacing: .02em; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    /* ───────── Intro ───────── */
+    #intro { display: none; }
+    .is-intro { overflow: hidden; }
+    .is-intro #intro {
+      display: grid;
+      grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+      place-items: center;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--black);
+      cursor: pointer;
+      clip-path: inset(0% 0% 0% 0%);
+    }
+    #intro[data-bg="mint"]  { background: var(--mint); }
+    #intro[data-bg="navy"]  { background: var(--navy); }
+    #intro[data-bg="black"] { background: var(--black); }
+
+    .beat {
+      grid-area: 1 / 1;
+      opacity: 0;
+      font-weight: 850;
+      font-stretch: 112%;
+      text-transform: uppercase;
+      line-height: .9;
+      letter-spacing: -.025em;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .beat .fit { display: inline-block; }
+    .hello span { display: inline-block; visibility: hidden; }
+    .hello .c-navy  { color: var(--navy); }
+    .hello .c-white { color: var(--white); }
+    .whip { color: var(--mint); filter: url(#mblur); will-change: transform; }
+    .facts { display: grid; place-items: center; }
+    .fact { grid-area: 1 / 1; visibility: hidden; }
+    .fact[data-tone="mint"]  { color: var(--mint); }
+    .fact[data-tone="navy"]  { color: var(--navy); }
+    .closing { color: var(--mint); }
+    .closing .line { display: block; }
+    .accent { position: relative; display: inline-block; }
+    .accent[data-on] { color: var(--white); }
+    .swoosh {
+      position: absolute;
+      left: -6%;
+      bottom: 72%;
+      width: 112%;
+      height: .6em;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .swoosh path { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+    .skip {
+      position: absolute;
+      right: var(--gutter);
+      bottom: 20px;
+      padding: 8px 12px;
+      border: 0;
+      border-radius: 999px;
+      background: color-mix(in oklch, var(--black) 70%, transparent);
+      color: var(--white);
+      font: 500 .75rem/1 var(--mono);
+      letter-spacing: .04em;
+      cursor: pointer;
+    }
+
+    /* ───────── Page ───────── */
+    .rise { transition: opacity .9s var(--ease-out), transform 1.1s var(--ease-out); transition-delay: calc(var(--i, 0) * 90ms); }
+    .js:not(.is-ready) .rise { opacity: 0; transform: translateY(28px); }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-block: 24px;
+    }
+    .brand { font-weight: 800; font-stretch: 112%; letter-spacing: -.01em; text-decoration: none; font-size: 1.05rem; }
+    .nav { display: flex; gap: clamp(12px, 3vw, 32px); }
+    .nav a { text-decoration: none; color: var(--muted); transition: color .2s; }
+    .nav a:hover { color: var(--mint); }
+
+    .hero { min-height: calc(100svh - 80px); display: flex; flex-direction: column; justify-content: center; padding-block: 6vh 10vh; }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 10.4vw, 10.5rem);
+      font-weight: 850;
+      font-stretch: 112%;
+      line-height: .88;
+      letter-spacing: -.03em;
+      text-transform: uppercase;
+    }
+    .hero h1 em { font-style: normal; color: var(--mint); }
+    .hero-foot {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      gap: 24px 48px;
+      margin-top: clamp(32px, 6vh, 64px);
+      align-items: end;
+    }
+    .bio { margin: 0; max-width: 46ch; color: var(--muted); font-size: clamp(1rem, 1.3vw, 1.15rem); }
+    .whisper { margin: 0; max-width: 52ch; color: var(--mint); line-height: 1.6; }
+    .whisper::before { content: "→ "; }
+    .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--mint);
+      text-decoration: none;
+      font-weight: 650;
+      transition: background .25s, color .25s, transform .25s var(--ease-out);
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-solid { background: var(--mint); color: var(--navy); }
+    .btn-ghost:hover { background: var(--mint); color: var(--navy); }
+
+    section { padding-block: clamp(72px, 14vh, 160px); border-top: 1px solid var(--line); }
+    .kicker { color: var(--mint); margin: 0 0 20px; text-transform: uppercase; }
+    h2 {
+      margin: 0;
+      font-size: clamp(2.2rem, 7vw, 6.5rem);
+      font-weight: 850;
+      font-stretch: 112%;
+      line-height: .9;
+      letter-spacing: -.03em;
+      text-transform: uppercase;
+    }
+    .lede { max-width: 56ch; color: var(--muted); font-size: clamp(1rem, 1.3vw, 1.15rem); margin: 28px 0 56px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 190px;
+      padding: 22px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background .3s;
+    }
+    .card:hover { background: var(--navy-2); }
+    .card-label { color: var(--muted); text-transform: uppercase; display: flex; justify-content: space-between; gap: 8px; }
+    .card-label .live { color: var(--mint); }
+    .card-label .live::before {
+      content: "";
+      display: inline-block;
+      width: 6px; height: 6px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      vertical-align: middle;
+      animation: pulse 1.4s infinite;
+    }
+    .card-value {
+      font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+      font-weight: 750;
+      font-stretch: 105%;
+      line-height: 1.05;
+      letter-spacing: -.015em;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+    .card-note { margin-top: auto; color: var(--muted); font-size: .875rem; line-height: 1.45; }
+    @keyframes pulse { 50% { opacity: .25; } }
+
+    .cant { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .cant li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding-block: 18px;
+      border-bottom: 1px solid var(--line);
+      font-size: clamp(1.4rem, 4vw, 3rem);
+      font-weight: 800;
+      font-stretch: 112%;
+      text-transform: uppercase;
+      letter-spacing: -.02em;
+    }
+    .cant li span:first-child { text-decoration: line-through; text-decoration-color: var(--mint); text-decoration-thickness: .08em; }
+    .cant .mono { color: var(--muted); text-transform: none; letter-spacing: .02em; font-weight: 400; text-align: right; max-width: 34ch; }
+
+    footer { border-top: 1px solid var(--line); padding-block: 40px 56px; color: var(--muted); }
+    .foot { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; }
+    .foot p { margin: 0; max-width: 60ch; }
+    .linkish { background: none; border: 0; padding: 0; color: var(--mint); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 50;
+      width: max-content;
+      max-width: calc(100vw - 32px);
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: var(--mint);
+      color: var(--navy);
+      font: 500 .875rem/1.4 var(--mono);
+      transform: translate(-50%, calc(100% + 40px));
+      transition: transform .5s var(--ease-out);
+    }
+    .toast.is-on { transform: translate(-50%, 0); }
+
+    @media (max-width: 600px) {
+      .nav a:not(:last-child) { display: none; }
+      .cant li { flex-direction: column; gap: 4px; }
+      .cant .mono { text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+      .js:not(.is-ready) .rise { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Horizontal-only motion blur for the whip beat -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="mblur" x="-50%" y="0" width="200%" height="100%">
+      <feGaussianBlur id="mblurNode" stdDeviation="0 0" />
+    </filter>
+  </svg>
+
+  <div id="intro" aria-hidden="true">
+    <div class="beat hello"><span class="fit" data-hello></span></div>
+    <div class="beat"><span class="fit whip" data-whip></span></div>
+    <div class="beat facts" data-facts></div>
+    <div class="beat closing">
+      <span class="fit">
+        <span class="line">Interfaces that</span>
+        <span class="line">Pay <span class="accent" data-accent>attention.<svg class="swoosh" viewBox="0 0 300 60" preserveAspectRatio="none"><path pathLength="1" d="M6 54 C 70 24, 170 4, 294 12"/></svg></span></span>
+      </span>
+    </div>
+    <button class="skip" type="button">Skip intro</button>
+  </div>
+
+  <header class="wrap top rise" style="--i:0">
+    <a class="brand" href="/">FRAN CORTEZ</a>
+    <nav class="nav mono" aria-label="Main">
+      <a href="#browser">Your browser</a>
+      <a href="https://github.com/franglow">GitHub</a>
+      <!-- TODO: replace with your contact email -->
+      <a href="mailto:">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <h1 class="rise" style="--i:1">Frontend &amp;<br><em>Product</em><br>Engineer.</h1>
+      <div class="hero-foot">
+        <div class="rise" style="--i:2">
+          <p class="bio">More than ten years building for the web — Walt Disney Parks, LAN Airlines, Savings United. I turn vague goals into live products, with AI as the default and ownership of what ships.</p>
+          <div class="ctas">
+            <a class="btn btn-solid" href="mailto:">Let's talk</a>
+            <a class="btn btn-ghost" href="/">See my work</a>
+          </div>
+        </div>
+        <p class="whisper mono rise" style="--i:3" data-whisper>Your browser is talking. Scroll to hear what it says.</p>
+      </div>
+    </div>
+
+    <section id="browser" aria-labelledby="browser-title">
+      <div class="wrap">
+        <p class="kicker mono">01 — No permission asked</p>
+        <h2 id="browser-title">Your browser<br>is talking.</h2>
+        <p class="lede">Every site you open gets this list for free. Here is yours, read live. It's computed on your device and never leaves it: no server, no cookies, no tracking.</p>
+        <div class="grid" data-grid></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="cant-title">
+      <div class="wrap">
+        <p class="kicker mono">02 — Where the web draws the line</p>
+        <h2 id="cant-title">What I<br>can't see.</h2>
+        <p class="lede">Browsers block all of this unless you say yes, and they show you an indicator while it's on. That's the web working as it should.</p>
+        <ul class="cant">
+          <li><span>Your camera</span><span class="mono">Needs your explicit yes. Then a light or icon shows it.</span></li>
+          <li><span>Your microphone</span><span class="mono">Same rule. No silent listening, ever.</span></li>
+          <li><span>Your history</span><span class="mono">The old :visited trick was closed off in 2010.</span></li>
+          <li><span>Your other tabs</span><span class="mono">Each site lives in its own sandbox.</span></li>
+          <li><span>Your passwords</span><span class="mono">Never exposed to the page you're on.</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <p class="mono">Nothing on this page is stored, sent, or tracked. Close the tab and it's gone.</p>
+      <p class="mono"><button class="linkish" type="button" data-replay>Replay intro</button> · © <span data-year></span> Fran Cortez</p>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script>
+  (() => {
+    const $ = (s, r = document) => r.querySelector(s);
+    const root = document.documentElement;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ───────── Signals: everything below is readable without a permission prompt ─────────
+    const ua = navigator.userAgent;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const city = tz.includes('/') ? tz.split('/').pop().replace(/_/g, ' ') : '';
+    const timeFmt = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' });
+    const clockFmt = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const lang = navigator.language || 'en';
+    const cores = navigator.hardwareConcurrency;
+    const memory = navigator.deviceMemory;
+    const conn = navigator.connection;
+
+    const os = (() => {
+      const p = navigator.userAgentData?.platform;
+      if (p) return p;
+      if (/iPhone|iPod/.test(ua)) return 'iOS';
+      if (/iPad/.test(ua)) return 'iPadOS';
+      if (/Mac OS X/.test(ua)) return navigator.maxTouchPoints > 1 ? 'iPadOS' : 'macOS';
+      if (/Android/.test(ua)) return 'Android';
+      if (/Windows/.test(ua)) return 'Windows';
+      if (/CrOS/.test(ua)) return 'ChromeOS';
+      if (/Linux/.test(ua)) return 'Linux';
+      return 'an unknown OS';
+    })();
+
+    const browser = (() => {
+      const brands = (navigator.userAgentData?.brands || [])
+        .map(b => b.brand)
+        .filter(b => !/Not|Chromium/i.test(b));
+      if (brands.length) return brands[0].replace(/^Google /, '');
+      if (/Edg\//.test(ua)) return 'Edge';
+      if (/Firefox\//.test(ua)) return 'Firefox';
+      if (/Chrome\//.test(ua)) return 'Chrome';
+      if (/Safari\//.test(ua)) return 'Safari';
+      return 'your browser';
+    })();
+
+    const gpu = (() => {
+      try {
+        const gl = document.createElement('canvas').getContext('webgl');
+        if (!gl) return null;
+        const ext = gl.getExtension('WEBGL_debug_renderer_info');
+        let name = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+        if (!name) return null;
+        // "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)" → "Apple M3 Pro"
+        if (name.startsWith('ANGLE (')) {
+          const parts = name.slice(7, -1).split(', ');
+          name = parts[1] || parts[0];
+        }
+        name = name
+          .replace(/ANGLE Metal Renderer:\s*/, '')
+          .replace(/\((R|TM)\)/g, '')
+          .replace(/\s*\(0x[0-9a-f]+\)/i, '')
+          .replace(/\s+(Direct3D|vs_\d|OpenGL).*$/i, '')
+          .trim();
+        return { name, masked: /^(Apple GPU|WebKit|Mozilla|Generic)/i.test(name) };
+      } catch (e) {
+        return null;
+      }
+    })();
+
+    const greeting = { es: 'Hola', de: 'Hallo', fr: 'Bonjour', pt: 'Olá', it: 'Ciao', nl: 'Hallo' }[lang.slice(0, 2)] || 'Hello';
+    const langName = (code) => {
+      try { return new Intl.DisplayNames(['en'], { type: 'language' }).of(code); } catch (e) { return code; }
+    };
+
+    // ───────── Intro ─────────
+    function buildIntro() {
+      const hello = $('[data-hello]');
+      const colors = ['c-navy', 'c-navy', 'c-white', 'c-navy', 'c-white', 'c-navy', 'c-white'];
+      [...(greeting + '.')].forEach((ch, i) => {
+        const s = document.createElement('span');
+        s.textContent = ch;
+        s.className = colors[i % colors.length];
+        hello.append(s);
+      });
+
+      const time = timeFmt.format(new Date());
+      $('[data-whip]').textContent = city ? `${city}, ${time}` : time;
+
+      const factsText = [
+        dark ? 'Dark mode.' : 'Light mode.',
+        gpu && !gpu.masked ? `${gpu.name}.` : `${os}.`,
+        cores ? `${cores} cores.` : `${browser}.`,
+      ];
+      const tones = [['black', 'mint'], ['mint', 'navy'], ['black', 'mint']];
+      const factsBox = $('[data-facts]');
+      factsText.forEach((t, i) => {
+        const f = document.createElement('span');
+        f.className = 'fit fact';
+        f.textContent = t;
+        f.dataset.tone = tones[i][1];
+        f.dataset.bg = tones[i][0];
+        factsBox.append(f);
+      });
+    }
+
+    // Scale a single-line element so it spans `ratio` of the viewport width.
+    function fit(el, ratio, maxPx) {
+      el.style.fontSize = '100px';
+      const size = Math.min(maxPx, (innerWidth * ratio / el.scrollWidth) * 100);
+      el.style.fontSize = `${size}px`;
+    }
+
+    function fitAll() {
+      const h = innerHeight;
+      fit($('.hello .fit'), .78, h * .42);
+      fit($('[data-whip]'), .9, h * .3);
+      document.querySelectorAll('.fact').forEach(f => fit(f, .82, h * .28));
+      fit($('.closing .fit'), .88, h * .2);
+    }
+
+    function playIntro() {
+      const intro = $('#intro');
+      const blurNode = $('#mblurNode');
+      const blur = { v: 0 };
+      const setBlur = () => blurNode.setAttribute('stdDeviation', `${blur.v} 0`);
+      const lines = intro.querySelectorAll('.closing .line');
+      const accent = $('[data-accent]');
+      const swoosh = accent.querySelector('path');
+      const offscreen = () => innerWidth * 1.15;
+
+      const tl = gsap.timeline({ onComplete: finishIntro });
+
+      // Beat 1 — black, then a hard cut to mint and the greeting builds letter by letter
+      tl.set(intro, { attr: { 'data-bg': 'black' } })
+        .to({}, { duration: .35 })
+        .set(intro, { attr: { 'data-bg': 'mint' } })
+        .set('.hello', { opacity: 1 });
+      intro.querySelectorAll('.hello span').forEach((s, i) => {
+        tl.fromTo(s,
+          { visibility: 'hidden', yPercent: 18, scale: 1.15 },
+          { visibility: 'visible', yPercent: 0, scale: 1, duration: .2, ease: 'power4.out' },
+          i ? '<.085' : '>');
+      });
+      tl.to({}, { duration: .4 });
+
+      // Beat 2 — navy, city + time whips across with horizontal motion blur
+      tl.set('.hello', { opacity: 0 })
+        .set(intro, { attr: { 'data-bg': 'navy' } })
+        .set('[data-whip]', { x: offscreen, skewX: -14 })
+        .set($('[data-whip]').parentNode, { opacity: 1 })
+        .to('[data-whip]', { x: 0, skewX: 0, duration: .8, ease: 'expo.out' })
+        .fromTo(blur, { v: 90 }, { v: 0, duration: .8, ease: 'expo.out', onUpdate: setBlur }, '<')
+        .to({}, { duration: .3 })
+        .to('[data-whip]', { x: () => -offscreen(), skewX: 14, duration: .32, ease: 'expo.in' })
+        .to(blur, { v: 90, duration: .32, ease: 'expo.in', onUpdate: setBlur }, '<')
+        .set($('[data-whip]').parentNode, { opacity: 0 });
+
+      // Beat 3 — three facts, hard cuts like a fast edit
+      tl.set('[data-facts]', { opacity: 1 });
+      intro.querySelectorAll('.fact').forEach((f, i, all) => {
+        tl.set(all, { visibility: 'hidden' })
+          .set(intro, { attr: { 'data-bg': f.dataset.bg } })
+          .set(f, { visibility: 'visible' })
+          .to({}, { duration: i === all.length - 1 ? .45 : .34 });
+      });
+      tl.set('[data-facts]', { opacity: 0 });
+
+      // Beat 4 — closing line rises in, accent flips color, swoosh draws itself
+      tl.set(intro, { attr: { 'data-bg': 'navy' } })
+        .set('.closing', { opacity: 1 })
+        .fromTo(lines,
+          { yPercent: 60, clipPath: 'inset(0% 0% 100% 0%)' },
+          { yPercent: 0, clipPath: 'inset(-80% -10% -10% -10%)', duration: .6, ease: 'expo.out', stagger: .09 })
+        .set(accent, { attr: { 'data-on': '' } }, '+=.12')
+        .fromTo(swoosh, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .55, ease: 'power2.inOut' }, '<')
+        .to({}, { duration: .9 })
+        .addLabel('outro')
+        .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: .75, ease: 'expo.inOut' });
+
+      let skipped = false;
+      const skip = () => {
+        if (skipped || tl.time() >= tl.labels.outro) return;
+        skipped = true;
+        tl.seek('outro');
+      };
+      intro.addEventListener('pointerdown', skip);
+      addEventListener('keydown', skip, { once: true });
+      addEventListener('wheel', skip, { once: true, passive: true });
+    }
+
+    function finishIntro() {
+      try { sessionStorage.setItem('lab:intro', '1'); } catch (e) {}
+      root.classList.remove('is-intro');
+      requestAnimationFrame(() => root.classList.add('is-ready'));
+    }
+
+    async function startIntro() {
+      if (!root.classList.contains('is-intro')) return finishIntro();
+      if (!window.gsap) return finishIntro(); // CDN failed: show the page, skip the show
+      buildIntro();
+      await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]);
+      fitAll();
+      addEventListener('resize', fitAll);
+      playIntro();
+    }
+
+    $('[data-replay]').addEventListener('click', () => {
+      try { sessionStorage.removeItem('lab:intro'); } catch (e) {}
+      location.href = `${location.pathname}?intro`;
+    });
+
+    // ───────── Hero whisper ─────────
+    const whisper = [
+      city ? `It's ${timeFmt.format(new Date())} in ${city}.` : `It's ${timeFmt.format(new Date())} where you are.`,
+      `You're on ${os}${gpu && !gpu.masked ? ` with an ${gpu.name}` : ''}, in ${dark ? 'dark' : 'light'} mode.`,
+      'Your browser told me. Scroll to hear what else it says.',
+    ].join(' ').replace(/ an ([^AEIOU])/, ' a $1');
+    $('[data-whisper]').textContent = whisper;
+    $('[data-year]').textContent = new Date().getFullYear();
+
+    // ───────── Live behaviour ─────────
+    const live = { speed: 0, peak: 0, scroll: 0, switches: 0, awayTotal: 0, start: performance.now() };
+    let last = null;
+    addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const now = performance.now();
+      if (last) {
+        const dt = (now - last.t) / 1000;
+        if (dt > 0) {
+          const v = Math.hypot(e.clientX - last.x, e.clientY - last.y) / dt;
+          live.speed = live.speed * .85 + v * .15;
+          live.peak = Math.max(live.peak, live.speed);
+        }
+      }
+      last = { x: e.clientX, y: e.clientY, t: now };
+    }, { passive: true });
+
+    addEventListener('scroll', () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      live.scroll = Math.max(live.scroll, max > 0 ? scrollY / max : 0);
+    }, { passive: true });
+
+    const fmtDur = (s) => (s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`);
+
+    let hiddenAt = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        hiddenAt = performance.now();
+        live.switches++;
+      } else if (hiddenAt) {
+        const s = Math.round((performance.now() - hiddenAt) / 1000);
+        live.awayTotal += s;
+        toast(`Welcome back. You were gone ${fmtDur(s)}. Your browser told me that too.`);
+      }
+    });
+
+    document.addEventListener('copy', () => {
+      const sel = String(getSelection()).trim().replace(/\s+/g, ' ');
+      if (!sel) return;
+      const short = sel.length > 36 ? `${sel.slice(0, 36)}…` : sel;
+      toast(`You copied “${short}”. Pages get a copy event and can read the selection.`);
+    });
+
+    let toastTimer;
+    function toast(msg) {
+      const el = $('[data-toast]');
+      el.textContent = msg;
+      el.classList.add('is-on');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('is-on'), 4200);
+    }
+
+    // ───────── Cards ─────────
+    const unsupported = `Private in ${browser}. Good call.`;
+    const signals = [
+      {
+        label: 'Where & when',
+        value: () => city ? `${city}, ${clockFmt.format(new Date())}` : clockFmt.format(new Date()),
+        note: () => `From your clock's timezone (${tz || 'unknown'}), not GPS. No permission needed.`,
+        live: true,
+      },
+      {
+        label: 'Graphics chip',
+        value: () => gpu ? gpu.name : 'Hidden',
+        note: () => gpu?.masked ? `${browser} blurs the exact model on purpose.` : 'Read through WebGL, the same API that renders 3D.',
+      },
+      {
+        label: 'System',
+        value: () => `${os} · ${browser}`,
+        note: () => 'Sent with every single request, before the page even loads.',
+      },
+      {
+        label: 'Screen',
+        value: () => `${screen.width}×${screen.height} @${devicePixelRatio}x`,
+        note: () => `That's ${Math.round(screen.width * devicePixelRatio)}×${Math.round(screen.height * devicePixelRatio)} real pixels.`,
+      },
+      {
+        label: 'Window',
+        value: () => `${innerWidth}×${innerHeight}`,
+        note: () => 'Resize it. I see that too.',
+        live: true,
+      },
+      {
+        label: 'Preferences',
+        value: () => `${dark ? 'Dark' : 'Light'} mode`,
+        note: () => `Reduced motion: ${reduced ? 'on' : 'off'}. Contrast: ${matchMedia('(prefers-contrast: more)').matches ? 'more' : 'standard'}.`,
+      },
+      {
+        label: 'Language',
+        value: () => langName(lang),
+        note: () => {
+          const others = (navigator.languages || []).slice(1).map(l => langName(l).split(' (')[0]);
+          const uniq = [...new Set(others)].filter(l => !langName(lang).includes(l));
+          return uniq.length ? `Also: ${uniq.join(', ')}.` : 'Your first choice, in order of preference.';
+        },
+      },
+      {
+        label: 'Processor & memory',
+        value: () => [cores && `${cores} cores`, memory && `${memory} GB+`].filter(Boolean).join(' · ') || 'Hidden',
+        note: () => memory ? 'Memory is rounded and capped, on purpose.' : 'Memory: ' + unsupported,
+      },
+      {
+        label: 'Battery',
+        value: () => 'Hidden',
+        note: () => unsupported,
+        init(card) {
+          if (!navigator.getBattery) return;
+          navigator.getBattery().then((b) => {
+            const render = () => {
+              card.value = `${Math.round(b.level * 100)}%${b.charging ? ' · charging' : ''}`;
+              card.note = 'Plug or unplug your charger and watch this change.';
+              card.refresh();
+            };
+            render();
+            b.addEventListener('levelchange', render);
+            b.addEventListener('chargingchange', render);
+          }).catch(() => {});
+        },
+      },
+      {
+        label: 'Connection',
+        value: () => conn?.effectiveType ? `${conn.effectiveType.toUpperCase()} · ~${conn.downlink} Mbps` : (navigator.onLine ? 'Online' : 'Offline'),
+        note: () => conn ? 'Estimated from your real traffic, rounded.' : `Speed: ${unsupported}`,
+      },
+      {
+        label: 'Input',
+        value: () => matchMedia('(pointer: fine)').matches ? 'Mouse / trackpad' : `Touch · ${navigator.maxTouchPoints} points`,
+        note: () => matchMedia('(hover: hover)').matches ? 'You can hover. Phones can\'t.' : 'Multi-touch, no hover.',
+      },
+      {
+        label: 'You came from',
+        value: () => {
+          try { return document.referrer ? new URL(document.referrer).hostname : 'Direct'; } catch (e) { return 'Direct'; }
+        },
+        note: () => document.referrer ? 'The previous site handed me that.' : 'Typed, bookmarked, or the last site kept quiet.',
+      },
+      {
+        label: 'Cursor speed',
+        value: () => matchMedia('(pointer: fine)').matches ? `${Math.round(live.speed)} px/s` : 'Touch',
+        note: () => live.peak ? `Peak: ${Math.round(live.peak)} px/s. Move fast.` : 'Move your mouse.',
+        live: true,
+      },
+      {
+        label: 'Read so far',
+        value: () => `${Math.round(live.scroll * 100)}%`,
+        note: () => 'Scroll depth. Every analytics tool tracks this one.',
+        live: true,
+      },
+      {
+        label: 'Time here',
+        value: () => fmtDur(Math.round((performance.now() - live.start) / 1000)),
+        note: () => live.switches ? `You left ${live.switches}× for ${fmtDur(live.awayTotal)} in total.` : 'Switch tabs and come back.',
+        live: true,
+      },
+    ];
+
+    const SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*';
+    function scramble(el, text, delay = 0) {
+      if (reduced) { el.textContent = text; return; }
+      const dur = 650;
+      const t0 = performance.now() + delay;
+      const tick = (now) => {
+        const p = Math.min(1, Math.max(0, (now - t0) / dur));
+        const n = Math.floor(p * text.length);
+        el.textContent = text.slice(0, n) + [...text.slice(n)].map(c => (c === ' ' ? ' ' : SCRAMBLE[Math.random() * SCRAMBLE.length | 0])).join('');
+        if (p < 1) requestAnimationFrame(tick);
+        else el.dataset.done = '1';
+      };
+      requestAnimationFrame(tick);
+    }
+
+    const grid = $('[data-grid]');
+    const cards = signals.map((sig) => {
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = '<div class="card-label mono"><span></span></div><div class="card-value"></div><p class="card-note"></p>';
+      el.querySelector('.card-label span').textContent = sig.label;
+      if (sig.live) {
+        const tag = document.createElement('span');
+        tag.className = 'live';
+        tag.textContent = 'Live';
+        el.querySelector('.card-label').append(tag);
+      }
+      const valueEl = el.querySelector('.card-value');
+      const noteEl = el.querySelector('.card-note');
+      valueEl.textContent = '—';
+      const card = {
+        sig, el, valueEl, noteEl, revealed: false, value: null, note: null,
+        text: () => card.value ?? sig.value(),
+        refresh() {
+          if (!card.revealed || !valueEl.dataset.done) return;
+          valueEl.textContent = card.text();
+          noteEl.textContent = card.note ?? sig.note();
+        },
+      };
+      sig.init?.(card);
+      grid.append(el);
+      return card;
+    });
+
+    const io = new IntersectionObserver((entries) => {
+      let i = 0;
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const card = cards.find(c => c.el === entry.target);
+        io.unobserve(entry.target);
+        card.revealed = true;
+        card.noteEl.textContent = card.note ?? card.sig.note();
+        scramble(card.valueEl, card.text(), i++ * 70);
+      });
+    }, { threshold: .35 });
+    cards.forEach(c => io.observe(c.el));
+
+    setInterval(() => cards.forEach(c => c.sig.live && c.refresh()), 250);
+
+    startIntro();
+  })();
+  </script>
+</body>
+</html>
