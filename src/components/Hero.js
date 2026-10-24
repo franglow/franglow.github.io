@@ -12,28 +12,18 @@ import {
 } from '@chakra-ui/react';
 
 export default function Hero() {
-  const { site, user } = useStaticQuery(graphql`
+  const { site } = useStaticQuery(graphql`
     {
-      user: allGithubData {
-        nodes {
-          data {
-            user {
-              name
-              bio
-              email
-              avatarUrl
-            }
-          }
-        }
-      }
       site {
         siteMetadata {
+          author
+          avatar
           bioplus
         }
       }
     }
   `);
-  const profile = user.nodes[0].data.user;
+  const { author, avatar, bioplus } = site.siteMetadata;
 
   return (
     <>
@@ -49,19 +39,19 @@ export default function Hero() {
             fontSize={{ base: '1xl', sm: '3xl', md: '5xl' }}
             lineHeight="110%"
           >
-            Hi 👋 I am {profile.name} <br />
+            Hi 👋 I am {author} <br />
             <Text as="span" color="green.500">
               Frontend &amp; Product Engineer
             </Text>
           </Heading>
           <Center>
-            <Avatar size="2xl" name="fran cortez " src={profile.avatarUrl} />
+            <Avatar size="2xl" name={author} src={avatar} />
           </Center>
           <Text
             color={useColorModeValue('gray.500', 'gray.400')}
             fontSize={{ base: 'lg', lg: 'xl' }}
           >
-            {site.siteMetadata.bioplus}
+            {bioplus}
           </Text>
         </Stack>
       </Container>

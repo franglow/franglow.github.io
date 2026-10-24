@@ -37,21 +37,14 @@ const NavLinkSocial = ({ icon, href, label }) => (
 export default function Header() {
   const data = useStaticQuery(graphql`
     {
-      allGithubData {
-        nodes {
-          data {
-            user {
-              name
-              bio
-              email
-              avatarUrl
-            }
-          }
+      site {
+        siteMetadata {
+          author
         }
       }
     }
   `);
-  const profile = data.allGithubData.nodes[0].data.user;
+  const { author } = data.site.siteMetadata;
 
   const { toggleColorMode: toggleMode } = useColorMode();
   const text = useColorModeValue('dark', 'light');
@@ -61,7 +54,7 @@ export default function Header() {
     <Box bg={useColorModeValue('white', 'gray.900')} px={[2, 4]}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <HStack spacing={8} alignItems="center">
-          <Text fontWeight={600}>{profile.name}</Text>
+          <Text fontWeight={600}>{author}</Text>
         </HStack>
         <Flex alignItems="center" gridGap={4}>
           {links.map((link) => (

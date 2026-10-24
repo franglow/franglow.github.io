@@ -1,11 +1,12 @@
 const dotenv = require('dotenv');
 
 dotenv.config();
-const { githubApiQuery } = require('./src/utils/github-api');
 
 module.exports = {
   siteMetadata: {
     title: `Frontend & Product Engineer`,
+    author: 'Fran Cortez',
+    avatar: '/fran-avatar.jpg',
     siteUrl: `https://franglow.github.io/`,
     description:
       'Fran Cortez — frontend and product engineer in Berlin, more than ten years on the web, building with AI as the default.',
@@ -29,32 +30,12 @@ module.exports = {
         isUsingColorMode: true,
       },
     },
-    {
-      resolve: `gatsby-source-github-api`,
-      options: {
-        url: 'https://api.github.com/graphql', // default Github GraphQL v4 API endpoint
-
-        // token: required by the GitHub API
-        token: process.env.GITHUB_TOKEN,
-
-        // GraphQLquery: defaults to a search query
-        graphQLQuery: githubApiQuery,
-
-        // variables: defaults to variables needed for a search query
-        variables: {
-          github_login: 'franglow',
-        },
-      },
-    },
-    'gatsby-plugin-image',
-    {
+    process.env.GOOGLE_ANALYTICS && {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: process.env.GOOGLE_ANALYTICS,
       },
     },
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
-  ],
+  ].filter(Boolean),
 };
