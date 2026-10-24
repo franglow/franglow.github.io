@@ -5,11 +5,12 @@ const { githubApiQuery } = require('./src/utils/github-api');
 
 module.exports = {
   siteMetadata: {
-    title: `Fran's web site`,
+    title: `Frontend & Product Engineer`,
     siteUrl: `https://franglow.github.io/`,
-    description: 'This is an awesome personal website!',
+    description:
+      'Fran Cortez — frontend and product engineer in Berlin, more than ten years on the web, building with AI as the default.',
     bioplus:
-      'At the moment my focus is on the awesome framework Gatsby which this website is based on and GraphQL. Please check the projects below through which I was improving my JavaScript skills during the past months.',
+      'More than ten years building for the web — accessibility for Walt Disney Parks and Resorts Online, the check-in platform at LAN Airlines, and the component system behind Savings United’s campaign sites. I build with AI as the default: I direct the tools, review what they produce, and own what ships. Today I turn vague goals from founders and small teams into live sites such as base-pages.com and carma-retreats.com.',
   },
   flags: { PRESERVE_FILE_DOWNLOAD_CACHE: true, PRESERVE_WEBPACK_CACHE: true },
   plugins: [

@@ -51,7 +51,7 @@ export default function Hero() {
           >
             Hi 👋 I am {profile.name} <br />
             <Text as="span" color="green.500">
-              Frontend Developer
+              Frontend &amp; Product Engineer
             </Text>
           </Heading>
           <Center>
@@ -61,7 +61,6 @@ export default function Hero() {
             color={useColorModeValue('gray.500', 'gray.400')}
             fontSize={{ base: 'lg', lg: 'xl' }}
           >
-            {profile.bio}
             {site.siteMetadata.bioplus}
           </Text>
         </Stack>
