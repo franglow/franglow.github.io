@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Fran Cortez — Frontend & Product Engineer</title>
   <meta name="description" content="Fran Cortez, Frontend & Product Engineer in Berlin. This page shows what your browser tells every site you visit — computed on your device, never sent anywhere.">
   <meta name="theme-color" content="#0f1440">
@@ -38,6 +38,7 @@
       --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
       --ease-out: cubic-bezier(.16, 1, .3, 1);
       --gutter: max(16px, 4vw);
+      --safe-x: max(var(--gutter), env(safe-area-inset-left), env(safe-area-inset-right));
 
       color-scheme: dark;
     }
@@ -58,9 +59,8 @@
     ::selection { background: var(--mint); color: var(--navy); }
     :focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
 
-    .wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: var(--gutter); }
+    .wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: var(--safe-x); }
     .mono { font-family: var(--mono); font-size: .8125rem; letter-spacing: .02em; }
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
     /* ───────── Intro ───────── */
     #intro { display: none; }
@@ -117,8 +117,8 @@
 
     .skip {
       position: absolute;
-      right: var(--gutter);
-      bottom: 20px;
+      right: var(--safe-x);
+      bottom: calc(20px + env(safe-area-inset-bottom));
       padding: 8px 12px;
       border: 0;
       border-radius: 999px;
@@ -138,7 +138,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-block: 24px;
+      padding-block: max(24px, env(safe-area-inset-top)) 24px;
     }
     .brand { font-weight: 800; font-stretch: 112%; letter-spacing: -.01em; text-decoration: none; font-size: 1.05rem; }
     .nav { display: flex; gap: clamp(12px, 3vw, 32px); }
@@ -156,6 +156,12 @@
       text-transform: uppercase;
     }
     .hero h1 em { font-style: normal; color: var(--mint); }
+    .tilt {
+      display: inline-block;
+      transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transform-origin: 30% 50%;
+      transition: transform .3s ease-out;
+    }
     .hero-foot {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
@@ -174,8 +180,11 @@
       padding: 14px 22px;
       border-radius: 999px;
       border: 1px solid var(--mint);
+      background: none;
+      color: var(--white);
+      font: 650 1rem/1.2 var(--display);
       text-decoration: none;
-      font-weight: 650;
+      cursor: pointer;
       transition: background .25s, color .25s, transform .25s var(--ease-out);
     }
     .btn:hover { transform: translateY(-2px); }
@@ -234,8 +243,68 @@
       overflow-wrap: anywhere;
       font-variant-numeric: tabular-nums;
     }
-    .card-note { margin-top: auto; color: var(--muted); font-size: .875rem; line-height: 1.45; }
+    .card-note { margin-top: auto; margin-bottom: 0; color: var(--muted); font-size: .875rem; line-height: 1.45; }
+    .card-btn {
+      align-self: flex-start;
+      padding: 8px 14px;
+      border: 1px solid var(--mint);
+      border-radius: 999px;
+      background: none;
+      color: var(--mint);
+      cursor: pointer;
+    }
+    .card-btn:hover { background: var(--mint); color: var(--navy); }
+    .typing {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--white);
+      font: 400 .875rem/1.3 var(--mono);
+    }
+    .typing::placeholder { color: var(--muted); }
+    .bars { display: flex; align-items: flex-end; gap: 2px; height: 28px; }
+    .bars span { flex: 1; min-height: 2px; border-radius: 1px; background: var(--mint); }
     @keyframes pulse { 50% { opacity: .25; } }
+
+    /* Tracker tests: blurred until the visitor consents */
+    .vault { position: relative; }
+    .vault-grid { transition: filter .9s var(--ease-out); }
+    .vault:not(.is-open) .vault-grid { filter: blur(12px) saturate(.6); user-select: none; pointer-events: none; }
+    .gate {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      justify-items: center;
+      align-items: start;
+      padding: 24px 0;
+      background: color-mix(in oklch, var(--navy) 30%, transparent);
+    }
+    .vault.is-open .gate { display: none; }
+    .gate-box {
+      position: sticky;
+      top: 18vh;
+      width: min(100%, 540px);
+      padding: clamp(24px, 4vw, 40px);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--navy);
+      text-align: center;
+      box-shadow: 0 30px 80px -20px oklch(0 0 0 / .6);
+    }
+    .gate-box h3 {
+      margin: 0 0 14px;
+      font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+      font-weight: 850;
+      font-stretch: 112%;
+      line-height: .95;
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+    }
+    .gate-box p { margin: 0 auto 24px; max-width: 46ch; color: var(--muted); line-height: 1.6; }
+    .gate-box .ctas { justify-content: center; margin: 0; }
+    .vault-foot { margin: 20px 0 0; color: var(--muted); }
 
     .cant { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
     .cant li {
@@ -252,9 +321,20 @@
       letter-spacing: -.02em;
     }
     .cant li span:first-child { text-decoration: line-through; text-decoration-color: var(--mint); text-decoration-thickness: .08em; }
-    .cant .mono { color: var(--muted); text-transform: none; letter-spacing: .02em; font-weight: 400; text-align: right; max-width: 34ch; }
+    .cant .mono { color: var(--muted); text-transform: none; letter-spacing: .02em; font-weight: 400; text-align: right; max-width: 38ch; }
 
-    footer { border-top: 1px solid var(--line); padding-block: 40px 56px; color: var(--muted); }
+    .how {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      gap: 0 48px;
+      border-top: 1px solid var(--line);
+    }
+    .how article { padding-block: 28px; border-bottom: 1px solid var(--line); }
+    .how .mono { color: var(--mint); }
+    .how h3 { margin: 10px 0 8px; font-size: clamp(1.25rem, 2vw, 1.6rem); font-weight: 750; font-stretch: 105%; letter-spacing: -.01em; }
+    .how p { margin: 0; max-width: 48ch; color: var(--muted); }
+
+    footer { border-top: 1px solid var(--line); padding-block: 40px max(56px, calc(env(safe-area-inset-bottom) + 24px)); color: var(--muted); }
     .foot { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; }
     .foot p { margin: 0; max-width: 60ch; }
     .linkish { background: none; border: 0; padding: 0; color: var(--mint); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
@@ -262,7 +342,7 @@
     .toast {
       position: fixed;
       left: 50%;
-      bottom: 24px;
+      bottom: calc(24px + env(safe-area-inset-bottom));
       z-index: 50;
       width: max-content;
       max-width: calc(100vw - 32px);
@@ -271,7 +351,7 @@
       background: var(--mint);
       color: var(--navy);
       font: 500 .875rem/1.4 var(--mono);
-      transform: translate(-50%, calc(100% + 40px));
+      transform: translate(-50%, calc(100% + 40px + env(safe-area-inset-bottom)));
       transition: transform .5s var(--ease-out);
     }
     .toast.is-on { transform: translate(-50%, 0); }
@@ -285,6 +365,7 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
       .js:not(.is-ready) .rise { opacity: 1; transform: none; }
+      .tilt { transform: none; }
     }
   </style>
 </head>
@@ -314,6 +395,7 @@
     <a class="brand" href="/">FRAN CORTEZ</a>
     <nav class="nav mono" aria-label="Main">
       <a href="#browser">Your browser</a>
+      <a href="#how">How it works</a>
       <a href="https://github.com/franglow">GitHub</a>
       <a href="https://www.linkedin.com/in/francortez">LinkedIn</a>
       <a href="mailto:elfrancortez@gmail.com">Contact</a>
@@ -322,7 +404,7 @@
 
   <main>
     <div class="wrap hero">
-      <h1 class="rise" style="--i:1">Frontend &amp;<br><em>Product</em><br>Engineer.</h1>
+      <h1 class="rise" style="--i:1"><span class="tilt" data-tilt>Frontend &amp;<br><em>Product</em><br>Engineer.</span></h1>
       <div class="hero-foot">
         <div class="rise" style="--i:2">
           <p class="bio">More than ten years on the web: accessibility for Walt Disney Parks and Resorts Online, web check-in at LAN Airlines, the component system behind Savings United's campaign sites. I build with AI as the default: I direct the tools, review what they produce, and own what ships.</p>
@@ -344,9 +426,31 @@
       </div>
     </section>
 
+    <section id="trackers" aria-labelledby="trackers-title">
+      <div class="wrap">
+        <p class="kicker mono">02 — Possible. Not polite.</p>
+        <h2 id="trackers-title">What trackers<br>do next.</h2>
+        <p class="lede">Everything above is free for any site. This is what trackers build from it, and it works in most browsers today. Most sites never ask. I will.</p>
+        <div class="vault" data-vault>
+          <div class="grid vault-grid" data-vault-grid inert aria-hidden="true"></div>
+          <div class="gate" data-gate>
+            <div class="gate-box">
+              <h3 data-gate-title>Run the tracker tests?</h3>
+              <p class="mono" data-gate-copy>I'll fingerprint this browser, look for extensions and installed fonts, and remember this visit. It all stays in your browser, nothing is sent anywhere, and one click forgets it.</p>
+              <div class="ctas">
+                <button class="btn btn-solid" type="button" data-consent>Yes, show me</button>
+                <button class="btn btn-ghost" type="button" data-decline>No thanks</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="vault-foot mono" data-forget-wrap hidden><button class="linkish" type="button" data-forget>Forget me</button> — deletes the stored fingerprint and visit count from this browser.</p>
+      </div>
+    </section>
+
     <section aria-labelledby="cant-title">
       <div class="wrap">
-        <p class="kicker mono">02 — Where the web draws the line</p>
+        <p class="kicker mono">03 — Where the web draws the line</p>
         <h2 id="cant-title">What I<br>can't see.</h2>
         <p class="lede">Browsers block all of this unless you say yes, and they show you an indicator while it's on. That's the web working as it should.</p>
         <ul class="cant">
@@ -354,15 +458,56 @@
           <li><span>Your microphone</span><span class="mono">Same rule. No silent listening, ever.</span></li>
           <li><span>Your history</span><span class="mono">The old :visited trick was closed off in 2010.</span></li>
           <li><span>Your other tabs</span><span class="mono">Each site lives in its own sandbox.</span></li>
+          <li><span>Your local network</span><span class="mono">In 2025, Meta and Yandex were caught using localhost to link web visits to Android apps. Since Chrome 142, sites must ask first.</span></li>
           <li><span>Your passwords</span><span class="mono">Never exposed to the page you're on.</span></li>
         </ul>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <p class="kicker mono">04 — The decisions behind it</p>
+        <h2 id="how-title">How this<br>works.</h2>
+        <p class="lede">A page about trust has to earn it. These are the calls I made and why.</p>
+        <div class="how">
+          <article>
+            <span class="mono">01</span>
+            <h3>One file. No framework.</h3>
+            <p>Plain HTML, CSS and JavaScript. GSAP runs the intro timeline; everything else is native browser APIs. It loads fast because there's almost nothing to load.</p>
+          </article>
+          <article>
+            <span class="mono">02</span>
+            <h3>Nothing leaves your device.</h3>
+            <p>No server, no cookies, no analytics. The only outside requests are the fonts (Google) and GSAP (Cloudflare), so those two see your IP, like on most sites.</p>
+          </article>
+          <article>
+            <span class="mono">03</span>
+            <h3>Honest over impressive.</h3>
+            <p>Your city comes from your clock's timezone, not GPS: less precise, nothing sent. When a browser hides something, the page says so instead of guessing.</p>
+          </article>
+          <article>
+            <span class="mono">04</span>
+            <h3>Consent before the creepy part.</h3>
+            <p>The tracker tests run only after you say yes. What they store stays in your browser, and "Forget me" deletes it.</p>
+          </article>
+          <article>
+            <span class="mono">05</span>
+            <h3>Motion with an off switch.</h3>
+            <p>The intro plays once per session, any key skips it, and it never plays if your system asks for reduced motion.</p>
+          </article>
+          <article>
+            <span class="mono">06</span>
+            <h3>Built with AI as the default.</h3>
+            <p>I direct the tools, review what they produce, and own what ships. The concept, the limits and the trade-offs on this page are decisions, not defaults.</p>
+          </article>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="wrap foot">
-      <p class="mono">Nothing on this page is stored, sent, or tracked. Close the tab and it's gone.</p>
+      <p class="mono">Nothing on this page is sent or tracked. Close the tab and it's gone.</p>
       <p class="mono"><button class="linkish" type="button" data-replay>Replay intro</button> · © <span data-year></span> Fran Cortez</p>
     </div>
   </footer>
@@ -375,6 +520,11 @@
     const $ = (s, r = document) => r.querySelector(s);
     const root = document.documentElement;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+      del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+    };
 
     // ───────── Signals: everything below is readable without a permission prompt ─────────
     const ua = navigator.userAgent;
@@ -383,10 +533,13 @@
     const timeFmt = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' });
     const clockFmt = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const touch = matchMedia('(pointer: coarse)').matches;
     const lang = navigator.language || 'en';
     const cores = navigator.hardwareConcurrency;
     const memory = navigator.deviceMemory;
     const conn = navigator.connection;
+    const isFirefox = /Firefox\//.test(ua);
+    const isSafari = /Safari\//.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|Edg\//.test(ua);
 
     const os = (() => {
       const p = navigator.userAgentData?.platform;
@@ -402,13 +555,14 @@
     })();
 
     const browser = (() => {
+      if (navigator.brave) return 'Brave';
       const brands = (navigator.userAgentData?.brands || [])
         .map(b => b.brand)
         .filter(b => !/Not|Chromium/i.test(b));
       if (brands.length) return brands[0].replace(/^Google /, '');
       if (/Edg\//.test(ua)) return 'Edge';
-      if (/Firefox\//.test(ua)) return 'Firefox';
-      if (/Chrome\//.test(ua)) return 'Chrome';
+      if (/Firefox\/|FxiOS/.test(ua)) return 'Firefox';
+      if (/Chrome\/|CriOS/.test(ua)) return 'Chrome';
       if (/Safari\//.test(ua)) return 'Safari';
       return 'your browser';
     })();
@@ -438,10 +592,61 @@
       }
     })();
 
+    // iPhones don't report a model, but each family has its own screen size and pixel density.
+    const IPHONES = {
+      '375x667@2': 'iPhone SE or 8',
+      '375x812@3': 'iPhone X, 11 Pro or mini',
+      '414x896@2': 'iPhone XR or 11',
+      '414x896@3': 'iPhone XS Max or 11 Pro Max',
+      '390x844@3': 'iPhone 12, 13 or 14',
+      '428x926@3': 'iPhone 13 Pro Max or 14 Plus',
+      '393x852@3': 'iPhone 14 Pro, 15 or 16',
+      '430x932@3': 'iPhone 15 Plus or Pro Max',
+      '402x874@3': 'iPhone 16 Pro or 17',
+      '420x912@3': 'iPhone Air',
+      '440x956@3': 'iPhone 16 or 17 Pro Max',
+    };
+    const screenKey = `${Math.min(screen.width, screen.height)}x${Math.max(screen.width, screen.height)}@${Math.round(devicePixelRatio)}`;
+
+    const device = (() => {
+      if (os === 'iOS') {
+        return IPHONES[screenKey]
+          ? { value: IPHONES[screenKey], note: `Matched from your screen alone (${screenKey}). No model name needed.` }
+          : { value: 'An iPhone', note: 'Your screen size didn\'t match a model I know. Safari may be blurring it.' };
+      }
+      if (os === 'iPadOS') return { value: 'An iPad', note: 'It says it\'s a Mac. The touchscreen gives it away.' };
+      if (os === 'macOS') {
+        const chip = gpu && !gpu.masked && /^Apple M/.test(gpu.name) ? gpu.name : '';
+        return { value: chip ? `Mac with ${chip}` : 'A Mac', note: 'Pieced together from the system and the graphics chip.' };
+      }
+      if (os === 'Android') return { value: 'An Android phone', note: 'Chrome would hand me the exact model. Your browser didn\'t.' };
+      if (os === 'Windows') return { value: 'A Windows PC', note: 'Chrome can even tell Windows 10 from 11.' };
+      return { value: os, note: 'Pieced together from the system and the screen.' };
+    })();
+
+    // Chrome's high-entropy client hints: phone model and exact OS version, no prompt.
+    const deviceReady = (navigator.userAgentData?.getHighEntropyValues?.(['model', 'platformVersion']) || Promise.resolve(null))
+      .then((h) => {
+        if (!h) return;
+        const major = parseInt(h.platformVersion, 10);
+        if (os === 'Android' && h.model) {
+          device.value = h.model;
+          device.model = h.model;
+          device.note = `Android ${major}. Chrome handed me the model name, no permission asked.`;
+        } else if (os === 'Windows' && major) {
+          device.value = major >= 13 ? 'A Windows 11 PC' : 'A Windows 10 PC';
+          device.note = 'Chrome tells any site that asks which Windows you run.';
+        } else if (os === 'macOS' && h.platformVersion) {
+          device.note = `macOS ${h.platformVersion.split('.').slice(0, 2).join('.')}. Chrome shares the exact version with any site that asks.`;
+        }
+      })
+      .catch(() => {});
+
     const greeting = { es: 'Hola', de: 'Hallo', fr: 'Bonjour', pt: 'Olá', it: 'Ciao', nl: 'Hallo' }[lang.slice(0, 2)] || 'Hello';
     const langName = (code) => {
       try { return new Intl.DisplayNames(['en'], { type: 'language' }).of(code); } catch (e) { return code; }
     };
+    const withArticle = (s) => (/^an? /i.test(s) ? s.replace(/^A/, 'a') : `${/^[aeiou]/i.test(s) ? 'an' : 'a'} ${s}`);
 
     // ───────── Intro ─────────
     function buildIntro() {
@@ -459,7 +664,7 @@
 
       const factsText = [
         dark ? 'Dark mode.' : 'Light mode.',
-        gpu && !gpu.masked ? `${gpu.name}.` : `${os}.`,
+        device.model ? `${device.model}.` : gpu && !gpu.masked ? `${gpu.name}.` : `${os}.`,
         cores ? `${cores} cores.` : `${browser}.`,
       ];
       const tones = [['black', 'mint'], ['mint', 'navy'], ['black', 'mint']];
@@ -497,6 +702,7 @@
       const lines = intro.querySelectorAll('.closing .line');
       const accent = $('[data-accent]');
       const swoosh = accent.querySelector('path');
+      const whip = $('[data-whip]');
       const offscreen = () => innerWidth * 1.15;
 
       const tl = gsap.timeline({ onComplete: finishIntro });
@@ -517,14 +723,14 @@
       // Beat 2 — navy, city + time whips across with horizontal motion blur
       tl.set('.hello', { opacity: 0 })
         .set(intro, { attr: { 'data-bg': 'navy' } })
-        .set('[data-whip]', { x: offscreen, skewX: -14 })
-        .set($('[data-whip]').parentNode, { opacity: 1 })
-        .to('[data-whip]', { x: 0, skewX: 0, duration: .8, ease: 'expo.out' })
+        .set(whip, { x: offscreen, skewX: -14 })
+        .set(whip.parentNode, { opacity: 1 })
+        .to(whip, { x: 0, skewX: 0, duration: .8, ease: 'expo.out' })
         .fromTo(blur, { v: 90 }, { v: 0, duration: .8, ease: 'expo.out', onUpdate: setBlur }, '<')
         .to({}, { duration: .3 })
-        .to('[data-whip]', { x: () => -offscreen(), skewX: 14, duration: .32, ease: 'expo.in' })
+        .to(whip, { x: () => -offscreen(), skewX: 14, duration: .32, ease: 'expo.in' })
         .to(blur, { v: 90, duration: .32, ease: 'expo.in', onUpdate: setBlur }, '<')
-        .set($('[data-whip]').parentNode, { opacity: 0 });
+        .set(whip.parentNode, { opacity: 0 });
 
       // Beat 3 — three facts, hard cuts like a fast edit
       tl.set('[data-facts]', { opacity: 1 });
@@ -568,8 +774,10 @@
     async function startIntro() {
       if (!root.classList.contains('is-intro')) return finishIntro();
       if (!window.gsap) return finishIntro(); // CDN failed: show the page, skip the show
+      const wait = (ms) => new Promise(r => setTimeout(r, ms));
+      await Promise.race([deviceReady, wait(400)]);
       buildIntro();
-      await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]);
+      await Promise.race([document.fonts.ready, wait(1500)]);
       fitAll();
       addEventListener('resize', fitAll);
       playIntro();
@@ -581,12 +789,15 @@
     });
 
     // ───────── Hero whisper ─────────
-    const whisper = [
-      city ? `It's ${timeFmt.format(new Date())} in ${city}.` : `It's ${timeFmt.format(new Date())} where you are.`,
-      `You're on ${os}${gpu && !gpu.masked ? ` with an ${gpu.name}` : ''}, in ${dark ? 'dark' : 'light'} mode.`,
-      'Your browser told me. Scroll to hear what else it says.',
-    ].join(' ').replace(/ an ([^AEIOU])/, ' a $1');
-    $('[data-whisper]').textContent = whisper;
+    function renderWhisper() {
+      $('[data-whisper]').textContent = [
+        city ? `It's ${timeFmt.format(new Date())} in ${city}.` : `It's ${timeFmt.format(new Date())} where you are.`,
+        `You're on ${withArticle(device.value)}, in ${dark ? 'dark' : 'light'} mode.`,
+        'Your browser told me. Scroll to hear what else it says.',
+      ].join(' ');
+    }
+    renderWhisper();
+    deviceReady.then(renderWhisper);
     $('[data-year]').textContent = new Date().getFullYear();
 
     // ───────── Live behaviour ─────────
@@ -604,6 +815,7 @@
         }
       }
       last = { x: e.clientX, y: e.clientY, t: now };
+      if (!tilt.on) setTilt((e.clientY / innerHeight - .5) * -6, (e.clientX / innerWidth - .5) * 8);
     }, { passive: true });
 
     addEventListener('scroll', () => {
@@ -621,7 +833,7 @@
       } else if (hiddenAt) {
         const s = Math.round((performance.now() - hiddenAt) / 1000);
         live.awayTotal += s;
-        toast(`Welcome back. You were gone ${fmtDur(s)}. Your browser told me that too.`);
+        if (s >= 2) toast(`Welcome back. You were gone ${fmtDur(s)}. Your browser told me that too.`);
       }
     });
 
@@ -641,8 +853,41 @@
       toastTimer = setTimeout(() => el.classList.remove('is-on'), 4200);
     }
 
+    // ───────── Tilt: gyroscope on phones, cursor on desktop ─────────
+    const tilt = { on: false, b: 0, g: 0 };
+    const tiltEl = $('[data-tilt]');
+    let tiltFrame = 0;
+    function setTilt(rx, ry) {
+      if (reduced || tiltFrame) return;
+      tiltFrame = requestAnimationFrame(() => {
+        tiltEl.style.setProperty('--rx', `${rx.toFixed(2)}deg`);
+        tiltEl.style.setProperty('--ry', `${ry.toFixed(2)}deg`);
+        tiltFrame = 0;
+      });
+    }
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    function onOrientation(e) {
+      if (e.beta == null) return;
+      tilt.on = true;
+      tilt.b = e.beta;
+      tilt.g = e.gamma;
+      setTilt(clamp(e.beta - 45, -30, 30) * -.25, clamp(e.gamma, -30, 30) * .35);
+    }
+    const motionNeedsAsk = typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function';
+    if (touch && !motionNeedsAsk) addEventListener('deviceorientation', onOrientation);
+
     // ───────── Cards ─────────
     const unsupported = `Private in ${browser}. Good call.`;
+    const shield = navigator.brave
+      ? ['Brave Shields', 'Brave randomizes parts of this list. Some values above may be fake, on purpose.']
+      : isSafari
+        ? ['Anti-fingerprinting', 'Safari adds noise to graphics and audio and blurs device details. That\'s why some cards say Hidden.']
+        : isFirefox
+          ? ['Tracking Protection', 'Firefox hides some hardware details, more so in private windows.']
+          : /Edg\//.test(ua)
+            ? ['Tracking prevention', 'Edge blocks known trackers. This page isn\'t one, so you see it all.']
+            : ['Standard', `${browser} shares more of this list than Safari, Firefox or Brave do.`];
+
     const signals = [
       {
         label: 'Where & when',
@@ -651,14 +896,43 @@
         live: true,
       },
       {
-        label: 'Graphics chip',
-        value: () => gpu ? gpu.name : 'Hidden',
-        note: () => gpu?.masked ? `${browser} blurs the exact model on purpose.` : 'Read through WebGL, the same API that renders 3D.',
+        label: 'Your device',
+        value: () => device.value,
+        note: () => device.note,
+        init(card) { deviceReady.then(() => card.refresh()); },
       },
       {
         label: 'System',
         value: () => `${os} · ${browser}`,
         note: () => 'Sent with every single request, before the page even loads.',
+      },
+      {
+        label: 'Graphics chip',
+        value: () => gpu ? gpu.name : 'Hidden',
+        note: () => gpu?.masked ? `${browser} blurs the exact model on purpose.` : 'Read through WebGL, the same API that renders 3D.',
+      },
+      {
+        label: 'Camera & mic',
+        value: () => '…',
+        note: () => 'Checking what exists, without turning anything on.',
+        init(card) {
+          if (!navigator.mediaDevices?.enumerateDevices) {
+            card.value = 'Hidden';
+            card.note = `${browser} won't even say if you have one.`;
+            return;
+          }
+          navigator.mediaDevices.enumerateDevices().then((list) => {
+            const has = (k) => list.some(d => d.kind === k);
+            if (!list.length) {
+              card.value = 'Hidden';
+              card.note = `${browser} won't even say if you have one.`;
+            } else {
+              card.value = `${has('videoinput') ? 'Camera ✓' : 'No camera'} · ${has('audioinput') ? 'Mic ✓' : 'No mic'}`;
+              card.note = 'I can tell they exist. Turning them on needs your yes, and a light comes on.';
+            }
+            card.refresh();
+          }).catch(() => {});
+        },
       },
       {
         label: 'Screen',
@@ -668,8 +942,16 @@
       {
         label: 'Window',
         value: () => `${innerWidth}×${innerHeight}`,
-        note: () => 'Resize it. I see that too.',
+        note: () => touch ? 'Rotate your phone. I see that too.' : 'Resize it. I see that too.',
         live: true,
+      },
+      {
+        label: 'Notch',
+        value: () => {
+          const top = safeTop();
+          return top >= 55 ? 'Dynamic Island' : top > 20 ? 'Notch' : 'None';
+        },
+        note: () => safeTop() > 20 ? 'Read from the safe area your screen reserves around it.' : 'No cutout reserved at the top of this screen.',
       },
       {
         label: 'Preferences',
@@ -680,15 +962,53 @@
         label: 'Language',
         value: () => langName(lang),
         note: () => {
+          const primary = langName(lang);
           const others = (navigator.languages || []).slice(1).map(l => langName(l).split(' (')[0]);
-          const uniq = [...new Set(others)].filter(l => !langName(lang).includes(l));
+          const uniq = [...new Set(others)].filter(l => !primary.includes(l));
           return uniq.length ? `Also: ${uniq.join(', ')}.` : 'Your first choice, in order of preference.';
+        },
+      },
+      {
+        label: 'Keyboard',
+        value: () => 'Hidden',
+        note: () => `Only Chrome on desktop shares this. ${browser === 'Chrome' ? 'Not here, though.' : `${browser} keeps it.`}`,
+        init(card) {
+          if (!navigator.keyboard?.getLayoutMap) return;
+          navigator.keyboard.getLayoutMap().then((map) => {
+            const q = map.get('KeyQ');
+            const y = map.get('KeyY');
+            const layout = q === 'a' ? 'AZERTY' : y === 'z' ? 'QWERTZ' : 'QWERTY';
+            const hint = { 'ñ': 'Spanish', 'ö': 'German', 'ç': 'Portuguese', 'æ': 'Danish', 'ø': 'Norwegian', 'ò': 'Italian' }[map.get('Semicolon')]
+              || { AZERTY: 'French', QWERTZ: 'German' }[layout] || '';
+            card.value = hint ? `${layout} · ${hint}` : layout;
+            card.note = 'Read from your physical keyboard layout. Chrome shares it with any page.';
+            card.refresh();
+          }).catch(() => {});
+        },
+      },
+      {
+        label: 'Voices',
+        value: () => 'None listed',
+        note: () => `${browser} keeps its voice list private.`,
+        init(card) {
+          const ss = window.speechSynthesis;
+          if (!ss) return;
+          const render = () => {
+            const v = ss.getVoices();
+            if (!v.length) return;
+            const langs = new Set(v.map(x => x.lang.split(/[-_]/)[0])).size;
+            card.value = `${v.length} voices`;
+            card.note = `In ${langs} languages. Your system installed them, and any site can list them.`;
+            card.refresh();
+          };
+          render();
+          ss.addEventListener?.('voiceschanged', render);
         },
       },
       {
         label: 'Processor & memory',
         value: () => [cores && `${cores} cores`, memory && `${memory} GB+`].filter(Boolean).join(' · ') || 'Hidden',
-        note: () => memory ? 'Memory is rounded and capped, on purpose.' : 'Memory: ' + unsupported,
+        note: () => memory ? 'Memory is rounded and capped, on purpose.' : `Memory: ${unsupported}`,
       },
       {
         label: 'Battery',
@@ -719,6 +1039,52 @@
         note: () => matchMedia('(hover: hover)').matches ? 'You can hover. Phones can\'t.' : 'Multi-touch, no hover.',
       },
       {
+        label: 'Tilt',
+        live: true,
+        value: () => {
+          if (tilt.on) return `${Math.round(tilt.b)}° · ${Math.round(tilt.g)}°`;
+          if (!touch) return 'No gyroscope';
+          return motionNeedsAsk ? 'Ask first' : 'Tilt your phone';
+        },
+        note: () => {
+          if (tilt.on) return motionNeedsAsk ? 'You said yes, so the headline now follows your hand.' : 'Android shares this with no prompt. Watch the headline follow you.';
+          if (!touch) return 'Open this page on your phone. The headline follows your mouse for now.';
+          return motionNeedsAsk ? 'iPhone asks before sharing motion. Android doesn\'t.' : 'Android shares motion with no prompt.';
+        },
+        action: touch && motionNeedsAsk ? {
+          label: 'Allow motion',
+          run: () => DeviceOrientationEvent.requestPermission()
+            .then((s) => { if (s === 'granted') addEventListener('deviceorientation', onOrientation); })
+            .catch(() => {}),
+        } : null,
+      },
+      {
+        label: 'Ad blocker',
+        value: () => '…',
+        note: () => 'Testing with a fake ad slot.',
+        init(card) {
+          const bait = document.createElement('div');
+          bait.className = 'ad ads adsbox ad-banner ad-placeholder textads banner-ads';
+          bait.style.cssText = 'position:absolute;left:-9999px;top:0;width:10px;height:10px';
+          bait.innerHTML = '&nbsp;';
+          document.body.append(bait);
+          setTimeout(() => {
+            const blocked = bait.offsetHeight === 0 || getComputedStyle(bait).display === 'none' || !bait.isConnected;
+            bait.remove();
+            card.value = blocked ? 'Detected' : 'None';
+            card.note = blocked
+              ? 'Good call. Sites can see it, though. That\'s how "disable your ad blocker" walls work.'
+              : 'A fake ad slot survived on this page, so nothing filtered it.';
+            card.refresh();
+          }, 700);
+        },
+      },
+      {
+        label: 'Your shield',
+        value: () => shield[0],
+        note: () => shield[1],
+      },
+      {
         label: 'You came from',
         value: () => {
           try { return document.referrer ? new URL(document.referrer).hostname : 'Direct'; } catch (e) { return 'Direct'; }
@@ -728,7 +1094,7 @@
       {
         label: 'Cursor speed',
         value: () => matchMedia('(pointer: fine)').matches ? `${Math.round(live.speed)} px/s` : 'Touch',
-        note: () => live.peak ? `Peak: ${Math.round(live.peak)} px/s. Move fast.` : 'Move your mouse.',
+        note: () => live.peak ? `Peak: ${Math.round(live.peak)} px/s. Move fast.` : (touch ? 'No cursor on a phone. Your thumb is faster anyway.' : 'Move your mouse.'),
         live: true,
       },
       {
@@ -745,23 +1111,34 @@
       },
     ];
 
+    function safeTop() {
+      const probe = document.createElement('div');
+      probe.style.cssText = 'position:fixed;top:0;height:env(safe-area-inset-top);visibility:hidden';
+      document.body.append(probe);
+      const h = probe.getBoundingClientRect().height;
+      probe.remove();
+      return h;
+    }
+
     const SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*';
-    function scramble(el, text, delay = 0) {
-      if (reduced) { el.textContent = text; return; }
+    function scramble(el, text, delay = 0, onDone) {
+      delete el.dataset.done;
+      if (reduced) { el.textContent = text; el.dataset.done = '1'; onDone?.(); return; }
       const dur = 650;
       const t0 = performance.now() + delay;
       const tick = (now) => {
         const p = Math.min(1, Math.max(0, (now - t0) / dur));
         const n = Math.floor(p * text.length);
         el.textContent = text.slice(0, n) + [...text.slice(n)].map(c => (c === ' ' ? ' ' : SCRAMBLE[Math.random() * SCRAMBLE.length | 0])).join('');
-        if (p < 1) requestAnimationFrame(tick);
-        else el.dataset.done = '1';
+        if (p < 1) return requestAnimationFrame(tick);
+        el.dataset.done = '1';
+        onDone?.();
       };
       requestAnimationFrame(tick);
     }
 
-    const grid = $('[data-grid]');
-    const cards = signals.map((sig) => {
+    const cards = [];
+    function makeCard(sig, parent) {
       const el = document.createElement('article');
       el.className = 'card';
       el.innerHTML = '<div class="card-label mono"><span></span></div><div class="card-value"></div><p class="card-note"></p>';
@@ -772,37 +1149,316 @@
         tag.textContent = 'Live';
         el.querySelector('.card-label').append(tag);
       }
+      if (sig.extra) el.append(sig.extra());
+      if (sig.action) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'card-btn mono';
+        btn.textContent = sig.action.label;
+        btn.addEventListener('click', async () => { await sig.action.run(); btn.remove(); });
+        el.append(btn);
+      }
       const valueEl = el.querySelector('.card-value');
       const noteEl = el.querySelector('.card-note');
-      valueEl.textContent = '—';
+      valueEl.textContent = sig.placeholder || '—';
+      if (sig.placeholder) noteEl.textContent = 'Run the tests to see this one.';
       const card = {
         sig, el, valueEl, noteEl, revealed: false, value: null, note: null,
         text: () => card.value ?? sig.value(),
+        noteText: () => card.note ?? sig.note(),
+        reveal(delay = 0) {
+          card.revealed = true;
+          noteEl.textContent = card.noteText();
+          scramble(valueEl, card.text(), delay, () => card.refresh());
+        },
         refresh() {
           if (!card.revealed || !valueEl.dataset.done) return;
           valueEl.textContent = card.text();
-          noteEl.textContent = card.note ?? sig.note();
+          noteEl.textContent = card.noteText();
         },
       };
+      parent.append(el);
       sig.init?.(card);
-      grid.append(el);
+      cards.push(card);
       return card;
-    });
+    }
+
+    const grid = $('[data-grid]');
+    const mainCards = signals.map(sig => makeCard(sig, grid));
 
     const io = new IntersectionObserver((entries) => {
       let i = 0;
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const card = cards.find(c => c.el === entry.target);
         io.unobserve(entry.target);
-        card.revealed = true;
-        card.noteEl.textContent = card.note ?? card.sig.note();
-        scramble(card.valueEl, card.text(), i++ * 70);
+        mainCards.find(c => c.el === entry.target).reveal(i++ * 70);
       });
     }, { threshold: .35 });
-    cards.forEach(c => io.observe(c.el));
+    mainCards.forEach(c => io.observe(c.el));
 
     setInterval(() => cards.forEach(c => c.sig.live && c.refresh()), 250);
+
+    // ───────── Tracker tests (only after consent) ─────────
+    const FONT_GROUPS = {
+      'Microsoft Office': ['Calibri', 'Cambria', 'Candara', 'Constantia', 'Corbel', 'Aptos'],
+      'Adobe apps': ['Myriad Pro', 'Minion Pro', 'Adobe Garamond Pro', 'Adobe Caslon Pro', 'Acumin Pro', 'Brush Script Std'],
+      'Developer fonts': ['Fira Code', 'Source Code Pro', 'Cascadia Code', 'Hack', 'Geist Mono', 'Monaspace Neon', 'IBM Plex Mono'],
+      'Designer fonts': ['Inter', 'Montserrat', 'Poppins', 'Open Sans', 'Lato', 'Space Grotesk', 'DM Sans'],
+    };
+
+    function detectFonts() {
+      const ctx = document.createElement('canvas').getContext('2d');
+      const sample = 'mmmmmmmmmmlli1WQ@#';
+      const bases = ['monospace', 'serif', 'sans-serif'];
+      const baseWidths = bases.map((b) => { ctx.font = `72px ${b}`; return ctx.measureText(sample).width; });
+      const has = (name) => bases.some((b, i) => { ctx.font = `72px "${name}", ${b}`; return ctx.measureText(sample).width !== baseWidths[i]; });
+      const groups = [];
+      const names = [];
+      let total = 0;
+      Object.entries(FONT_GROUPS).forEach(([group, list]) => {
+        total += list.length;
+        const hit = list.filter(has);
+        if (hit.length) { groups.push(group); names.push(...hit); }
+      });
+      return { groups, names, total };
+    }
+
+    function detectExtensions() {
+      const w = window;
+      const d = document;
+      const found = [];
+      if (d.body.hasAttribute('data-gr-ext-installed') || d.querySelector('grammarly-desktop-integration')) found.push('Grammarly');
+      if (d.body.hasAttribute('data-lt-installed')) found.push('LanguageTool');
+      if (d.querySelector('meta[name="darkreader"]') || root.hasAttribute('data-darkreader-scheme')) found.push('Dark Reader');
+      if (d.querySelector('com-1password-button, com-1password-menu')) found.push('1Password');
+      if (d.querySelector('[data-lastpass-root], [data-lastpass-icon-root]')) found.push('LastPass');
+      if (w.__REACT_DEVTOOLS_GLOBAL_HOOK__) found.push('React DevTools');
+      if (w.__VUE_DEVTOOLS_GLOBAL_HOOK__) found.push('Vue DevTools');
+      if (w.__REDUX_DEVTOOLS_EXTENSION__) found.push('Redux DevTools');
+      if (w.ethereum) found.push(w.ethereum.isBraveWallet ? 'Brave Wallet' : w.ethereum.isMetaMask ? 'MetaMask' : 'A crypto wallet');
+      if (w.phantom) found.push('Phantom');
+      if (root.classList.contains('translated-ltr') || root.classList.contains('translated-rtl')) found.push('Google Translate');
+      return [...new Set(found)];
+    }
+
+    async function fingerprint(fontNames) {
+      const c = document.createElement('canvas');
+      c.width = 280;
+      c.height = 60;
+      const x = c.getContext('2d');
+      x.textBaseline = 'top';
+      x.font = '18px Arial';
+      x.fillStyle = '#f60';
+      x.fillRect(100, 1, 62, 20);
+      x.fillStyle = '#069';
+      x.fillText('Fran Cortez <canvas> 🧭', 2, 15);
+      x.fillStyle = 'rgba(102, 204, 0, .7)';
+      x.fillText('Fran Cortez <canvas> 🧭', 4, 17);
+      x.beginPath();
+      x.arc(240, 30, 20, 0, Math.PI * 2);
+      x.stroke();
+      const parts = [
+        c.toDataURL(), gpu?.name, screen.width, screen.height, screen.colorDepth, devicePixelRatio,
+        tz, (navigator.languages || []).join(','), cores, memory, navigator.maxTouchPoints, fontNames.join(','),
+      ].join('|');
+      let hex;
+      if (window.crypto?.subtle) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(parts));
+        hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+      } else {
+        // FNV-1a fallback for insecure contexts
+        let h = 0x811c9dc5;
+        for (let i = 0; i < parts.length; i++) { h ^= parts.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+        hex = h.toString(16).padStart(8, '0').repeat(2);
+      }
+      return hex.slice(0, 12).toUpperCase().match(/.{4}/g).join(' ');
+    }
+
+    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    function ago(ts) {
+      const s = Math.round((ts - Date.now()) / 1000);
+      const steps = [[60, 'second'], [3600, 'minute'], [86400, 'hour'], [604800, 'day'], [Infinity, 'week']];
+      const div = { second: 1, minute: 60, hour: 3600, day: 86400, week: 604800 };
+      const [, unit] = steps.find(([lim]) => Math.abs(s) < lim);
+      return rtf.format(Math.round(s / div[unit]), unit);
+    }
+
+    function rememberVisit(fp) {
+      let rec = null;
+      try { rec = JSON.parse(store.get('lab:seen')); } catch (e) {}
+      let counted = false;
+      try { counted = sessionStorage.getItem('lab:counted') === '1'; } catch (e) {}
+      const now = Date.now();
+      if (!rec) {
+        rec = { fp, visits: 1, last: now };
+      } else if (!counted) {
+        rec.prev = { last: rec.last, fp: rec.fp };
+        rec.visits += 1;
+        rec.last = now;
+        rec.fp = fp;
+      }
+      store.set('lab:seen', JSON.stringify(rec));
+      try { sessionStorage.setItem('lab:counted', '1'); } catch (e) {}
+      return rec;
+    }
+
+    const vaultState = { ran: false, fp: '', fonts: null, ext: [], rec: null, gaps: [] };
+
+    const typing = (() => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:grid;gap:10px';
+      const input = document.createElement('input');
+      input.className = 'typing';
+      input.type = 'text';
+      input.placeholder = 'Type anything here…';
+      input.setAttribute('aria-label', 'Type anything to measure your typing rhythm');
+      input.autocomplete = 'off';
+      const bars = document.createElement('div');
+      bars.className = 'bars';
+      bars.setAttribute('aria-hidden', 'true');
+      wrap.append(input, bars);
+      let lastKey = 0;
+      input.addEventListener('keydown', (e) => {
+        if (e.key.length !== 1 && e.key !== 'Backspace') return;
+        const now = performance.now();
+        if (lastKey && now - lastKey < 1500) {
+          vaultState.gaps.push(now - lastKey);
+          vaultState.gaps = vaultState.gaps.slice(-32);
+          const max = Math.max(...vaultState.gaps);
+          bars.replaceChildren(...vaultState.gaps.map((g) => {
+            const s = document.createElement('span');
+            s.style.height = `${Math.max(8, (g / max) * 100)}%`;
+            return s;
+          }));
+          typingCard.refresh();
+        }
+        lastKey = now;
+      });
+      return wrap;
+    })();
+
+    const trackerSignals = [
+      {
+        label: 'Your fingerprint',
+        placeholder: '7F3A 91C2 0BE4',
+        value: () => vaultState.fp,
+        note: () => isSafari || navigator.brave
+          ? `${browser} adds noise, so this changes between sessions. That's the protection working.`
+          : 'Built from your graphics, fonts, screen and settings. Clear your cookies or open a private window: same code.',
+      },
+      {
+        label: 'Seen before',
+        placeholder: 'Visit #3',
+        value: () => vaultState.rec?.visits > 1 ? `Visit #${vaultState.rec.visits}` : 'First visit',
+        note: () => {
+          const r = vaultState.rec;
+          if (!r?.prev) return 'Come back tomorrow. I\'ll recognize this browser. (Stored here only, because you said yes.)';
+          const same = r.prev.fp === r.fp ? 'Same fingerprint as then.' : 'Your fingerprint changed since then.';
+          return `Last time: ${ago(r.prev.last)}. ${same} Real trackers keep this on their servers.`;
+        },
+      },
+      {
+        label: 'Extensions',
+        placeholder: 'Grammarly · MetaMask',
+        value: () => vaultState.ext.length ? vaultState.ext.slice(0, 3).join(' · ') : 'None I can see',
+        note: () => vaultState.ext.length
+          ? `Spotted from the traces they leave in the page${vaultState.ext.length > 3 ? `, plus ${vaultState.ext.length - 3} more` : ''}. Wallets are a favourite target.`
+          : 'Many extensions leave traces in every page. Yours, if any, kept quiet.',
+      },
+      {
+        label: 'Installed fonts',
+        placeholder: 'Office · Adobe',
+        value: () => vaultState.fonts?.groups.length ? vaultState.fonts.groups.join(' · ') : 'System only',
+        note: () => {
+          const f = vaultState.fonts;
+          if (!f) return '';
+          if (!f.names.length) return `I tested ${f.total} fonts that apps install. ${isFirefox || isSafari ? `${browser} only shows system fonts. Nice.` : 'None showed up.'}`;
+          return `Found ${f.names.length} of ${f.total} I tested: ${f.names.slice(0, 4).join(', ')}${f.names.length > 4 ? '…' : ''}. Fonts reveal the software you pay for.`;
+        },
+      },
+      {
+        label: 'Typing rhythm',
+        placeholder: '142 ms ± 38',
+        live: true,
+        extra: () => typing,
+        value: () => {
+          const g = vaultState.gaps;
+          if (g.length < 3) return 'Type to see it';
+          const mean = g.reduce((a, b) => a + b, 0) / g.length;
+          const sd = Math.sqrt(g.reduce((a, b) => a + (b - mean) ** 2, 0) / g.length);
+          return `${Math.round(mean)} ms ± ${Math.round(sd)}`;
+        },
+        note: () => 'Only the gaps between keys, never the keys. Banks use rhythm like this to spot bots and impostors.',
+      },
+      {
+        label: 'Signed-in accounts',
+        placeholder: 'Gmail · Facebook',
+        value: () => 'Closed',
+        note: () => 'This trick used to reveal if you were signed in to Gmail or Facebook. Cookie rules killed it. Good.',
+      },
+    ];
+
+    const vault = $('[data-vault]');
+    const vaultGrid = $('[data-vault-grid]');
+    const vaultCards = trackerSignals.map(sig => makeCard(sig, vaultGrid));
+    const typingCard = vaultCards[4];
+    const gateTitle = $('[data-gate-title]');
+    const gateCopy = $('[data-gate-copy]');
+    const gateCopyDefault = gateCopy.textContent;
+    const forgetWrap = $('[data-forget-wrap]');
+    const declineBtn = $('[data-decline]');
+
+    async function runTrackerTests() {
+      vaultState.fonts = detectFonts();
+      vaultState.ext = detectExtensions();
+      vaultState.fp = await fingerprint(vaultState.fonts.names);
+      vaultState.rec = rememberVisit(vaultState.fp);
+      vault.classList.add('is-open');
+      vaultGrid.inert = false;
+      vaultGrid.removeAttribute('aria-hidden');
+      forgetWrap.hidden = false;
+      vaultCards.forEach((c, i) => c.reveal(i * 90));
+    }
+
+    $('[data-consent]').addEventListener('click', () => {
+      store.set('lab:consent', '1');
+      runTrackerTests();
+    });
+
+    declineBtn.addEventListener('click', () => {
+      gateTitle.textContent = 'Fair enough.';
+      gateCopy.textContent = 'That\'s the right instinct. Most sites run these without asking. Change your mind any time.';
+      declineBtn.hidden = true;
+    });
+
+    $('[data-forget]').addEventListener('click', () => {
+      store.del('lab:seen');
+      store.del('lab:consent');
+      try { sessionStorage.removeItem('lab:counted'); } catch (e) {}
+      vault.classList.remove('is-open');
+      vaultGrid.inert = true;
+      vaultGrid.setAttribute('aria-hidden', 'true');
+      forgetWrap.hidden = true;
+      gateTitle.textContent = 'Run the tracker tests?';
+      gateCopy.textContent = gateCopyDefault;
+      declineBtn.hidden = false;
+      vaultCards.forEach((c) => {
+        c.revealed = false;
+        c.valueEl.textContent = c.sig.placeholder;
+        c.noteEl.textContent = 'Run the tests to see this one.';
+      });
+      toast('Forgotten. Nothing about you is stored here now.');
+    });
+
+    // Returning visitors who already said yes go straight to the results.
+    if (store.get('lab:consent') === '1') {
+      const reveal = new IntersectionObserver((entries) => {
+        if (!entries.some(e => e.isIntersecting)) return;
+        reveal.disconnect();
+        runTrackerTests();
+      }, { threshold: .1 });
+      reveal.observe(vault);
+    }
 
     startIntro();
   })();
