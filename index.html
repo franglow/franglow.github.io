@@ -1,49 +1,1227 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 3.5.0"/><title data-react-helmet="true">Frontend &amp; Product Engineer - Fran Cortez</title><link data-react-helmet="true" rel="icon" type="image/svg+xml" href="/favicon.svg"/><link data-react-helmet="true" rel="alternate icon" href="/favicon.ico"/><meta data-react-helmet="true" name="viewport" content="width=device-width, initial-scale=1.0"/><meta data-react-helmet="true" charSet="utf-8"/><meta data-react-helmet="true" name="description" content="Fran Cortez — frontend and product engineer in Berlin, more than ten years on the web, building with AI as the default."/><link as="script" rel="preload" href="/webpack-runtime-0810794cc5ca7b8f84a7.js"/><link as="script" rel="preload" href="/framework-a24af7c0f5e8b90df819.js"/><link as="script" rel="preload" href="/95b64a6e-8e211bfb7144147c594c.js"/><link as="script" rel="preload" href="/1bfc9850-8e590af34549583f055d.js"/><link as="script" rel="preload" href="/70b165ca-0521d154700fabc2f509.js"/><link as="script" rel="preload" href="/app-4a38cedfeaafa86cc083.js"/><link as="script" rel="preload" href="/component---src-pages-index-js-183fd1b758c9b6ed32ac.js"/><link as="fetch" rel="preload" href="/page-data/index/page-data.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data/sq/d/1118457338.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data/sq/d/3000541721.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data/sq/d/893747738.json" crossorigin="anonymous"/><link as="fetch" rel="preload" href="/page-data/app-data.json" crossorigin="anonymous"/></head><body><script>(function setScript(initialValue) {
-  var mql = window.matchMedia("(prefers-color-scheme: dark)");
-  var systemPreference = mql.matches ? "dark" : "light";
-  var persistedPreference;
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fran Cortez — Frontend & Product Engineer</title>
+  <meta name="description" content="Fran Cortez, Frontend & Product Engineer in Berlin. This page shows what your browser tells every site you visit — computed on your device, never sent anywhere.">
+  <meta name="theme-color" content="#0f1440">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500&display=swap">
 
-  try {
-    persistedPreference = localStorage.getItem("chakra-ui-color-mode");
-  } catch (error) {
-    console.log("Chakra UI: localStorage is not available. Color mode persistence might not work as expected");
-  }
+  <script>
+    // Decide before first paint whether the intro plays, so the page never flashes.
+    (function () {
+      var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var force = /[?&]intro\b/.test(location.search);
+      var seen = false;
+      try { seen = sessionStorage.getItem('lab:intro') === '1'; } catch (e) {}
+      var root = document.documentElement;
+      root.classList.add('js');
+      if (!reduced && (force || !seen)) root.classList.add('is-intro');
+    })();
+  </script>
 
-  var isInStorage = typeof persistedPreference === "string";
-  var colorMode;
+  <link rel="stylesheet" href="/site.css">
+</head>
+<body>
 
-  if (isInStorage) {
-    colorMode = persistedPreference;
-  } else {
-    colorMode = initialValue === "system" ? systemPreference : initialValue;
-  }
+  <!-- Horizontal-only motion blur for the whip beat -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="mblur" x="-50%" y="0" width="200%" height="100%">
+      <feGaussianBlur id="mblurNode" stdDeviation="0 0" />
+    </filter>
+  </svg>
 
-  if (colorMode) {
-    var root = document.documentElement;
-    root.style.setProperty("--chakra-ui-color-mode", colorMode);
-  }
-})('dark')</script><script>(function setScript(initialValue) {
-  var mql = window.matchMedia("(prefers-color-scheme: dark)");
-  var systemPreference = mql.matches ? "dark" : "light";
-  var persistedPreference;
+  <div id="intro" aria-hidden="true">
+    <div class="beat hello"><span class="fit" data-hello></span></div>
+    <div class="beat"><span class="fit whip" data-whip></span></div>
+    <div class="beat facts" data-facts></div>
+    <div class="beat closing">
+      <span class="fit">
+        <span class="line">Interfaces that</span>
+        <span class="line">Pay <span class="accent" data-accent>attention.<svg class="swoosh" viewBox="0 0 300 60" preserveAspectRatio="none"><path pathLength="1" d="M6 54 C 70 24, 170 4, 294 12"/></svg></span></span>
+      </span>
+    </div>
+    <button class="skip" type="button">Skip intro</button>
+  </div>
 
-  try {
-    persistedPreference = localStorage.getItem("chakra-ui-color-mode");
-  } catch (error) {
-    console.log("Chakra UI: localStorage is not available. Color mode persistence might not work as expected");
-  }
+  <header class="wrap top rise" style="--i:0">
+    <a class="brand" href="/">FRAN CORTEZ</a>
+    <nav class="nav mono" aria-label="Main">
+      <a href="#browser">Your browser</a>
+      <a href="/work/">Work</a>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/franglow">GitHub</a>
+      <a href="https://www.linkedin.com/in/francortez">LinkedIn</a>
+      <a href="mailto:elfrancortez@gmail.com">Contact</a>
+    </nav>
+  </header>
 
-  var isInStorage = typeof persistedPreference === "string";
-  var colorMode;
+  <main>
+    <div class="wrap hero">
+      <h1 class="rise" style="--i:1"><span class="tilt" data-tilt>Frontend &amp;<br><em>Product</em><br>Engineer.</span></h1>
+      <div class="hero-foot">
+        <div class="rise" style="--i:2">
+          <p class="bio">More than ten years on the web: accessibility for Walt Disney Parks and Resorts Online, web check-in at LAN Airlines, the component system behind Savings United's campaign sites. I build with AI as the default: I direct the tools, review what they produce, and own what ships.</p>
+          <div class="ctas">
+            <a class="btn btn-solid" href="mailto:elfrancortez@gmail.com">Let's talk</a>
+            <a class="btn btn-ghost" href="/work/">See my work</a>
+          </div>
+        </div>
+        <p class="whisper mono rise" style="--i:3" data-whisper>Your browser is talking. Scroll to hear what it says.</p>
+      </div>
+      <a class="cue mono rise" style="--i:4" href="#browser" data-cue aria-label="Playground: see what your browser is telling me">
+        <span class="wave" aria-hidden="true"><i style="--h:.55;--d:-.2s"></i><i style="--h:1;--d:-.65s"></i><i style="--h:.7;--d:-.1s"></i><i style="--h:.9;--d:-.85s"></i><i style="--h:.45;--d:-.4s"></i></span>
+        <span>Playground</span>
+        <span class="cue-arrow" aria-hidden="true">↓</span>
+      </a>
+    </div>
 
-  if (isInStorage) {
-    colorMode = persistedPreference;
-  } else {
-    colorMode = initialValue === "system" ? systemPreference : initialValue;
-  }
+    <section id="browser" aria-labelledby="browser-title">
+      <div class="wrap">
+        <p class="kicker mono">01 — Playground · No permission asked</p>
+        <h2 id="browser-title">Your browser<br>is talking.</h2>
+        <p class="lede">Every site you open gets this list for free. Here is yours, read live. It's computed on your device and never leaves it: no server, no cookies, no tracking. Flip any card to see who uses that detail, and what for.</p>
+        <button class="btn btn-ghost flip-all" type="button" aria-pressed="false" data-flip-all>Follow the money ↻</button>
+        <div class="grid" data-grid></div>
+      </div>
+    </section>
 
-  if (colorMode) {
-    var root = document.documentElement;
-    root.style.setProperty("--chakra-ui-color-mode", colorMode);
-  }
-})('dark')</script><div id="___gatsby"><style data-emotion="css-global 1meqzw0">:root{--chakra-ring-offset:0px;--chakra-ring-color:rgba(66, 153, 225, 0.6);--chakra-ring-width:3px;--chakra-ring-inset:var(--chakra-empty, /*!*/ /*!*/);--chakra-ring-offset-shadow:var(--chakra-ring-inset) 0 0 0 var(--chakra-ring-offset) var(--chakra-ring-offset-color, transparent);--chakra-ring-shadow:var(--chakra-ring-inset) 0 0 0 calc(var(--chakra-ring-width) + var(--chakra-ring-offset)) var(--chakra-ring-color);--chakra-ring:var(--chakra-ring-offset-shadow),var(--chakra-ring-shadow),0 0 transparent;--chakra-transform-gpu:translate3d(var(--chakra-translate-x, 0), var(--chakra-translate-y, 0), 0) rotate(var(--chakra-rotate, 0)) scaleX(var(--chakra-scale-x, 1)) scaleY(var(--chakra-scale-y, 1)) skewX(var(--chakra-skew-x, 0)) skewY(var(--chakra-skew-y, 0));--chakra-transform:translateX(var(--chakra-translate-x, 0)) translateY(var(--chakra-translate-y, 0)) rotate(var(--chakra-rotate, 0)) scaleX(var(--chakra-scale-x, 1)) scaleY(var(--chakra-scale-y, 1)) skewX(var(--chakra-skew-x, 0)) skewY(var(--chakra-skew-y, 0));--chakra-space-x-reverse:0;--chakra-space-y-reverse:0;--chakra-colors-transparent:transparent;--chakra-colors-current:currentColor;--chakra-colors-black:#000000;--chakra-colors-white:#FFFFFF;--chakra-colors-whiteAlpha-50:rgba(255, 255, 255, 0.04);--chakra-colors-whiteAlpha-100:rgba(255, 255, 255, 0.06);--chakra-colors-whiteAlpha-200:rgba(255, 255, 255, 0.08);--chakra-colors-whiteAlpha-300:rgba(255, 255, 255, 0.16);--chakra-colors-whiteAlpha-400:rgba(255, 255, 255, 0.24);--chakra-colors-whiteAlpha-500:rgba(255, 255, 255, 0.36);--chakra-colors-whiteAlpha-600:rgba(255, 255, 255, 0.48);--chakra-colors-whiteAlpha-700:rgba(255, 255, 255, 0.64);--chakra-colors-whiteAlpha-800:rgba(255, 255, 255, 0.80);--chakra-colors-whiteAlpha-900:rgba(255, 255, 255, 0.92);--chakra-colors-blackAlpha-50:rgba(0, 0, 0, 0.04);--chakra-colors-blackAlpha-100:rgba(0, 0, 0, 0.06);--chakra-colors-blackAlpha-200:rgba(0, 0, 0, 0.08);--chakra-colors-blackAlpha-300:rgba(0, 0, 0, 0.16);--chakra-colors-blackAlpha-400:rgba(0, 0, 0, 0.24);--chakra-colors-blackAlpha-500:rgba(0, 0, 0, 0.36);--chakra-colors-blackAlpha-600:rgba(0, 0, 0, 0.48);--chakra-colors-blackAlpha-700:rgba(0, 0, 0, 0.64);--chakra-colors-blackAlpha-800:rgba(0, 0, 0, 0.80);--chakra-colors-blackAlpha-900:rgba(0, 0, 0, 0.92);--chakra-colors-gray-50:#F7FAFC;--chakra-colors-gray-100:#EDF2F7;--chakra-colors-gray-200:#E2E8F0;--chakra-colors-gray-300:#CBD5E0;--chakra-colors-gray-400:#A0AEC0;--chakra-colors-gray-500:#718096;--chakra-colors-gray-600:#4A5568;--chakra-colors-gray-700:#2D3748;--chakra-colors-gray-800:#1A202C;--chakra-colors-gray-900:#171923;--chakra-colors-red-50:#FFF5F5;--chakra-colors-red-100:#FED7D7;--chakra-colors-red-200:#FEB2B2;--chakra-colors-red-300:#FC8181;--chakra-colors-red-400:#F56565;--chakra-colors-red-500:#E53E3E;--chakra-colors-red-600:#C53030;--chakra-colors-red-700:#9B2C2C;--chakra-colors-red-800:#822727;--chakra-colors-red-900:#63171B;--chakra-colors-orange-50:#FFFAF0;--chakra-colors-orange-100:#FEEBC8;--chakra-colors-orange-200:#FBD38D;--chakra-colors-orange-300:#F6AD55;--chakra-colors-orange-400:#ED8936;--chakra-colors-orange-500:#DD6B20;--chakra-colors-orange-600:#C05621;--chakra-colors-orange-700:#9C4221;--chakra-colors-orange-800:#7B341E;--chakra-colors-orange-900:#652B19;--chakra-colors-yellow-50:#FFFFF0;--chakra-colors-yellow-100:#FEFCBF;--chakra-colors-yellow-200:#FAF089;--chakra-colors-yellow-300:#F6E05E;--chakra-colors-yellow-400:#ECC94B;--chakra-colors-yellow-500:#D69E2E;--chakra-colors-yellow-600:#B7791F;--chakra-colors-yellow-700:#975A16;--chakra-colors-yellow-800:#744210;--chakra-colors-yellow-900:#5F370E;--chakra-colors-green-50:#F0FFF4;--chakra-colors-green-100:#C6F6D5;--chakra-colors-green-200:#9AE6B4;--chakra-colors-green-300:#68D391;--chakra-colors-green-400:#48BB78;--chakra-colors-green-500:#38A169;--chakra-colors-green-600:#2F855A;--chakra-colors-green-700:#276749;--chakra-colors-green-800:#22543D;--chakra-colors-green-900:#1C4532;--chakra-colors-teal-50:#E6FFFA;--chakra-colors-teal-100:#B2F5EA;--chakra-colors-teal-200:#81E6D9;--chakra-colors-teal-300:#4FD1C5;--chakra-colors-teal-400:#38B2AC;--chakra-colors-teal-500:#319795;--chakra-colors-teal-600:#2C7A7B;--chakra-colors-teal-700:#285E61;--chakra-colors-teal-800:#234E52;--chakra-colors-teal-900:#1D4044;--chakra-colors-blue-50:#ebf8ff;--chakra-colors-blue-100:#bee3f8;--chakra-colors-blue-200:#90cdf4;--chakra-colors-blue-300:#63b3ed;--chakra-colors-blue-400:#4299e1;--chakra-colors-blue-500:#3182ce;--chakra-colors-blue-600:#2b6cb0;--chakra-colors-blue-700:#2c5282;--chakra-colors-blue-800:#2a4365;--chakra-colors-blue-900:#1A365D;--chakra-colors-cyan-50:#EDFDFD;--chakra-colors-cyan-100:#C4F1F9;--chakra-colors-cyan-200:#9DECF9;--chakra-colors-cyan-300:#76E4F7;--chakra-colors-cyan-400:#0BC5EA;--chakra-colors-cyan-500:#00B5D8;--chakra-colors-cyan-600:#00A3C4;--chakra-colors-cyan-700:#0987A0;--chakra-colors-cyan-800:#086F83;--chakra-colors-cyan-900:#065666;--chakra-colors-purple-50:#FAF5FF;--chakra-colors-purple-100:#E9D8FD;--chakra-colors-purple-200:#D6BCFA;--chakra-colors-purple-300:#B794F4;--chakra-colors-purple-400:#9F7AEA;--chakra-colors-purple-500:#805AD5;--chakra-colors-purple-600:#6B46C1;--chakra-colors-purple-700:#553C9A;--chakra-colors-purple-800:#44337A;--chakra-colors-purple-900:#322659;--chakra-colors-pink-50:#FFF5F7;--chakra-colors-pink-100:#FED7E2;--chakra-colors-pink-200:#FBB6CE;--chakra-colors-pink-300:#F687B3;--chakra-colors-pink-400:#ED64A6;--chakra-colors-pink-500:#D53F8C;--chakra-colors-pink-600:#B83280;--chakra-colors-pink-700:#97266D;--chakra-colors-pink-800:#702459;--chakra-colors-pink-900:#521B41;--chakra-colors-linkedin-50:#E8F4F9;--chakra-colors-linkedin-100:#CFEDFB;--chakra-colors-linkedin-200:#9BDAF3;--chakra-colors-linkedin-300:#68C7EC;--chakra-colors-linkedin-400:#34B3E4;--chakra-colors-linkedin-500:#00A0DC;--chakra-colors-linkedin-600:#008CC9;--chakra-colors-linkedin-700:#0077B5;--chakra-colors-linkedin-800:#005E93;--chakra-colors-linkedin-900:#004471;--chakra-colors-facebook-50:#E8F4F9;--chakra-colors-facebook-100:#D9DEE9;--chakra-colors-facebook-200:#B7C2DA;--chakra-colors-facebook-300:#6482C0;--chakra-colors-facebook-400:#4267B2;--chakra-colors-facebook-500:#385898;--chakra-colors-facebook-600:#314E89;--chakra-colors-facebook-700:#29487D;--chakra-colors-facebook-800:#223B67;--chakra-colors-facebook-900:#1E355B;--chakra-colors-messenger-50:#D0E6FF;--chakra-colors-messenger-100:#B9DAFF;--chakra-colors-messenger-200:#A2CDFF;--chakra-colors-messenger-300:#7AB8FF;--chakra-colors-messenger-400:#2E90FF;--chakra-colors-messenger-500:#0078FF;--chakra-colors-messenger-600:#0063D1;--chakra-colors-messenger-700:#0052AC;--chakra-colors-messenger-800:#003C7E;--chakra-colors-messenger-900:#002C5C;--chakra-colors-whatsapp-50:#dffeec;--chakra-colors-whatsapp-100:#b9f5d0;--chakra-colors-whatsapp-200:#90edb3;--chakra-colors-whatsapp-300:#65e495;--chakra-colors-whatsapp-400:#3cdd78;--chakra-colors-whatsapp-500:#22c35e;--chakra-colors-whatsapp-600:#179848;--chakra-colors-whatsapp-700:#0c6c33;--chakra-colors-whatsapp-800:#01421c;--chakra-colors-whatsapp-900:#001803;--chakra-colors-twitter-50:#E5F4FD;--chakra-colors-twitter-100:#C8E9FB;--chakra-colors-twitter-200:#A8DCFA;--chakra-colors-twitter-300:#83CDF7;--chakra-colors-twitter-400:#57BBF5;--chakra-colors-twitter-500:#1DA1F2;--chakra-colors-twitter-600:#1A94DA;--chakra-colors-twitter-700:#1681BF;--chakra-colors-twitter-800:#136B9E;--chakra-colors-twitter-900:#0D4D71;--chakra-colors-telegram-50:#E3F2F9;--chakra-colors-telegram-100:#C5E4F3;--chakra-colors-telegram-200:#A2D4EC;--chakra-colors-telegram-300:#7AC1E4;--chakra-colors-telegram-400:#47A9DA;--chakra-colors-telegram-500:#0088CC;--chakra-colors-telegram-600:#007AB8;--chakra-colors-telegram-700:#006BA1;--chakra-colors-telegram-800:#005885;--chakra-colors-telegram-900:#003F5E;--chakra-borders-none:0;--chakra-borders-1px:1px solid;--chakra-borders-2px:2px solid;--chakra-borders-4px:4px solid;--chakra-borders-8px:8px solid;--chakra-fonts-heading:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--chakra-fonts-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--chakra-fonts-mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--chakra-fontSizes-xs:0.75rem;--chakra-fontSizes-sm:0.875rem;--chakra-fontSizes-md:1rem;--chakra-fontSizes-lg:1.125rem;--chakra-fontSizes-xl:1.25rem;--chakra-fontSizes-2xl:1.5rem;--chakra-fontSizes-3xl:1.875rem;--chakra-fontSizes-4xl:2.25rem;--chakra-fontSizes-5xl:3rem;--chakra-fontSizes-6xl:3.75rem;--chakra-fontSizes-7xl:4.5rem;--chakra-fontSizes-8xl:6rem;--chakra-fontSizes-9xl:8rem;--chakra-fontWeights-hairline:100;--chakra-fontWeights-thin:200;--chakra-fontWeights-light:300;--chakra-fontWeights-normal:400;--chakra-fontWeights-medium:500;--chakra-fontWeights-semibold:600;--chakra-fontWeights-bold:700;--chakra-fontWeights-extrabold:800;--chakra-fontWeights-black:900;--chakra-letterSpacings-tighter:-0.05em;--chakra-letterSpacings-tight:-0.025em;--chakra-letterSpacings-normal:0;--chakra-letterSpacings-wide:0.025em;--chakra-letterSpacings-wider:0.05em;--chakra-letterSpacings-widest:0.1em;--chakra-lineHeights-3:.75rem;--chakra-lineHeights-4:1rem;--chakra-lineHeights-5:1.25rem;--chakra-lineHeights-6:1.5rem;--chakra-lineHeights-7:1.75rem;--chakra-lineHeights-8:2rem;--chakra-lineHeights-9:2.25rem;--chakra-lineHeights-10:2.5rem;--chakra-lineHeights-normal:normal;--chakra-lineHeights-none:1;--chakra-lineHeights-shorter:1.25;--chakra-lineHeights-short:1.375;--chakra-lineHeights-base:1.5;--chakra-lineHeights-tall:1.625;--chakra-lineHeights-taller:2;--chakra-radii-none:0;--chakra-radii-sm:0.125rem;--chakra-radii-base:0.25rem;--chakra-radii-md:0.375rem;--chakra-radii-lg:0.5rem;--chakra-radii-xl:0.75rem;--chakra-radii-2xl:1rem;--chakra-radii-3xl:1.5rem;--chakra-radii-full:9999px;--chakra-space-1:0.25rem;--chakra-space-2:0.5rem;--chakra-space-3:0.75rem;--chakra-space-4:1rem;--chakra-space-5:1.25rem;--chakra-space-6:1.5rem;--chakra-space-7:1.75rem;--chakra-space-8:2rem;--chakra-space-9:2.25rem;--chakra-space-10:2.5rem;--chakra-space-12:3rem;--chakra-space-14:3.5rem;--chakra-space-16:4rem;--chakra-space-20:5rem;--chakra-space-24:6rem;--chakra-space-28:7rem;--chakra-space-32:8rem;--chakra-space-36:9rem;--chakra-space-40:10rem;--chakra-space-44:11rem;--chakra-space-48:12rem;--chakra-space-52:13rem;--chakra-space-56:14rem;--chakra-space-60:15rem;--chakra-space-64:16rem;--chakra-space-72:18rem;--chakra-space-80:20rem;--chakra-space-96:24rem;--chakra-space-px:1px;--chakra-space-0\.5:0.125rem;--chakra-space-1\.5:0.375rem;--chakra-space-2\.5:0.625rem;--chakra-space-3\.5:0.875rem;--chakra-shadows-xs:0 0 0 1px rgba(0, 0, 0, 0.05);--chakra-shadows-sm:0 1px 2px 0 rgba(0, 0, 0, 0.05);--chakra-shadows-base:0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06);--chakra-shadows-md:0 4px 6px -1px rgba(0, 0, 0, 0.1),0 2px 4px -1px rgba(0, 0, 0, 0.06);--chakra-shadows-lg:0 10px 15px -3px rgba(0, 0, 0, 0.1),0 4px 6px -2px rgba(0, 0, 0, 0.05);--chakra-shadows-xl:0 20px 25px -5px rgba(0, 0, 0, 0.1),0 10px 10px -5px rgba(0, 0, 0, 0.04);--chakra-shadows-2xl:0 25px 50px -12px rgba(0, 0, 0, 0.25);--chakra-shadows-outline:0 0 0 3px rgba(66, 153, 225, 0.6);--chakra-shadows-inner:inset 0 2px 4px 0 rgba(0,0,0,0.06);--chakra-shadows-none:none;--chakra-shadows-dark-lg:rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,rgba(0, 0, 0, 0.2) 0px 5px 10px,rgba(0, 0, 0, 0.4) 0px 15px 40px;--chakra-sizes-1:0.25rem;--chakra-sizes-2:0.5rem;--chakra-sizes-3:0.75rem;--chakra-sizes-4:1rem;--chakra-sizes-5:1.25rem;--chakra-sizes-6:1.5rem;--chakra-sizes-7:1.75rem;--chakra-sizes-8:2rem;--chakra-sizes-9:2.25rem;--chakra-sizes-10:2.5rem;--chakra-sizes-12:3rem;--chakra-sizes-14:3.5rem;--chakra-sizes-16:4rem;--chakra-sizes-20:5rem;--chakra-sizes-24:6rem;--chakra-sizes-28:7rem;--chakra-sizes-32:8rem;--chakra-sizes-36:9rem;--chakra-sizes-40:10rem;--chakra-sizes-44:11rem;--chakra-sizes-48:12rem;--chakra-sizes-52:13rem;--chakra-sizes-56:14rem;--chakra-sizes-60:15rem;--chakra-sizes-64:16rem;--chakra-sizes-72:18rem;--chakra-sizes-80:20rem;--chakra-sizes-96:24rem;--chakra-sizes-px:1px;--chakra-sizes-0\.5:0.125rem;--chakra-sizes-1\.5:0.375rem;--chakra-sizes-2\.5:0.625rem;--chakra-sizes-3\.5:0.875rem;--chakra-sizes-max:max-content;--chakra-sizes-min:min-content;--chakra-sizes-full:100%;--chakra-sizes-3xs:14rem;--chakra-sizes-2xs:16rem;--chakra-sizes-xs:20rem;--chakra-sizes-sm:24rem;--chakra-sizes-md:28rem;--chakra-sizes-lg:32rem;--chakra-sizes-xl:36rem;--chakra-sizes-2xl:42rem;--chakra-sizes-3xl:48rem;--chakra-sizes-4xl:56rem;--chakra-sizes-5xl:64rem;--chakra-sizes-6xl:72rem;--chakra-sizes-7xl:80rem;--chakra-sizes-8xl:90rem;--chakra-sizes-container-sm:640px;--chakra-sizes-container-md:768px;--chakra-sizes-container-lg:1024px;--chakra-sizes-container-xl:1280px;--chakra-zIndices-hide:-1;--chakra-zIndices-auto:auto;--chakra-zIndices-base:0;--chakra-zIndices-docked:10;--chakra-zIndices-dropdown:1000;--chakra-zIndices-sticky:1100;--chakra-zIndices-banner:1200;--chakra-zIndices-overlay:1300;--chakra-zIndices-modal:1400;--chakra-zIndices-popover:1500;--chakra-zIndices-skipLink:1600;--chakra-zIndices-toast:1700;--chakra-zIndices-tooltip:1800;--chakra-transition-property-common:background-color,border-color,color,fill,stroke,opacity,box-shadow,transform;--chakra-transition-property-colors:background-color,border-color,color,fill,stroke;--chakra-transition-property-dimensions:width,height;--chakra-transition-property-position:left,right,top,bottom;--chakra-transition-property-background:background-color,background-image,background-position;--chakra-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--chakra-transition-easing-ease-out:cubic-bezier(0, 0, 0.2, 1);--chakra-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--chakra-transition-duration-ultra-fast:50ms;--chakra-transition-duration-faster:100ms;--chakra-transition-duration-fast:150ms;--chakra-transition-duration-normal:200ms;--chakra-transition-duration-slow:300ms;--chakra-transition-duration-slower:400ms;--chakra-transition-duration-ultra-slow:500ms;}</style><style data-emotion="css-global 1syi0wy">html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-moz-osx-font-smoothing:grayscale;touch-action:manipulation;}body{position:relative;min-height:100%;font-feature-settings:'kern';}*,*::before,*::after{border-width:0;border-style:solid;box-sizing:border-box;}main{display:block;}hr{border-top-width:1px;box-sizing:content-box;height:0;overflow:visible;}pre,code,kbd,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:1em;}a{background-color:transparent;color:inherit;-webkit-text-decoration:inherit;text-decoration:inherit;}abbr[title]{border-bottom:none;-webkit-text-decoration:underline;text-decoration:underline;-webkit-text-decoration:underline dotted;-webkit-text-decoration:underline dotted;text-decoration:underline dotted;}b,strong{font-weight:bold;}small{font-size:80%;}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline;}sub{bottom:-0.25em;}sup{top:-0.5em;}img{border-style:none;}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0;}button,input{overflow:visible;}button,select{text-transform:none;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0;}fieldset{padding:0.35em 0.75em 0.625em;}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal;}progress{vertical-align:baseline;}textarea{overflow:auto;}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0;}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none!important;}input[type="number"]{-moz-appearance:textfield;}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px;}[type="search"]::-webkit-search-decoration{-webkit-appearance:none!important;}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit;}details{display:block;}summary{display:-webkit-box;display:-webkit-list-item;display:-ms-list-itembox;display:list-item;}template{display:none;}[hidden]{display:none!important;}body,blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre{margin:0;}button{background:transparent;padding:0;}fieldset{margin:0;padding:0;}ol,ul{margin:0;padding:0;}textarea{resize:vertical;}button,[role="button"]{cursor:pointer;}button::-moz-focus-inner{border:0!important;}table{border-collapse:collapse;}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit;}button,input,optgroup,select,textarea{padding:0;line-height:inherit;color:inherit;}img,svg,video,canvas,audio,iframe,embed,object{display:block;vertical-align:middle;}img,video{max-width:100%;height:auto;}[data-js-focus-visible] :focus:not([data-focus-visible-added]){outline:none;box-shadow:none;}select::-ms-expand{display:none;}</style><style data-emotion="css-global 13ypayb">body{font-family:var(--chakra-fonts-body);color:var(--chakra-colors-whiteAlpha-900);background:var(--chakra-colors-gray-800);-webkit-transition:background-color 0.2s;transition:background-color 0.2s;line-height:var(--chakra-lineHeights-base);}*::-webkit-input-placeholder{color:var(--chakra-colors-whiteAlpha-400);}*::-moz-placeholder{color:var(--chakra-colors-whiteAlpha-400);}*:-ms-input-placeholder{color:var(--chakra-colors-whiteAlpha-400);}*::placeholder{color:var(--chakra-colors-whiteAlpha-400);}*,*::before,::after{border-color:var(--chakra-colors-whiteAlpha-300);word-wrap:break-word;}</style><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 1ndzxmn">.css-1ndzxmn{padding:var(--chakra-space-2);max-width:1280px;margin:0 auto;}@media screen and (min-width: 30em){.css-1ndzxmn{padding:var(--chakra-space-4);}}@media screen and (min-width: 48em){.css-1ndzxmn{padding:var(--chakra-space-8);}}</style><div class="css-1ndzxmn"><style data-emotion="css 5jw053">.css-5jw053{background:var(--chakra-colors-gray-900);-webkit-padding-start:var(--chakra-space-2);padding-inline-start:var(--chakra-space-2);-webkit-padding-end:var(--chakra-space-2);padding-inline-end:var(--chakra-space-2);}@media screen and (min-width: 30em){.css-5jw053{-webkit-padding-start:var(--chakra-space-4);padding-inline-start:var(--chakra-space-4);-webkit-padding-end:var(--chakra-space-4);padding-inline-end:var(--chakra-space-4);}}</style><div class="css-5jw053"><style data-emotion="css lygqz2">.css-lygqz2{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;height:var(--chakra-sizes-16);}</style><div class="css-lygqz2"><style data-emotion="css 1ocidfa">.css-1ocidfa{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;}.css-1ocidfa>*:not(style)~*:not(style){margin-top:0px;-webkit-margin-end:0px;margin-inline-end:0px;margin-bottom:0px;-webkit-margin-start:var(--chakra-space-8);margin-inline-start:var(--chakra-space-8);}</style><div class="chakra-stack css-1ocidfa"><style data-emotion="css 35ezg3">.css-35ezg3{font-weight:600;}</style><p class="chakra-text css-35ezg3">Fran Cortez</p></div><style data-emotion="css 1by0xlb">.css-1by0xlb{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;grid-gap:var(--chakra-space-4);}</style><div class="css-1by0xlb"><style data-emotion="css 1pf61s3">.css-1pf61s3{-webkit-transition:all 0.15s ease-out;transition:all 0.15s ease-out;cursor:pointer;-webkit-text-decoration:none;text-decoration:none;outline:none;color:inherit;display:inline-block;}.css-1pf61s3:hover,.css-1pf61s3[data-hover]{-webkit-text-decoration:underline;text-decoration:underline;}.css-1pf61s3:focus,.css-1pf61s3[data-focus]{box-shadow:var(--chakra-shadows-outline);}</style><a target="_blank" rel="noopener noreferrer" class="chakra-link css-1pf61s3" href="https://github.com/franglow" aria-label="GitHub"><style data-emotion="css 9t64xk">.css-9t64xk{width:1em;height:1em;display:inline-block;line-height:1em;-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;color:var(--chakra-colors-gray-400);font-size:var(--chakra-fontSizes-xl);}</style><svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 32 32" focusable="false" class="chakra-icon css-9t64xk" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 5.343c-6.196 0-11.219 5.023-11.219 11.219 0 4.957 3.214 9.162 7.673 10.645 0.561 0.103 0.766-0.244 0.766-0.54 0-0.267-0.010-1.152-0.016-2.088-3.12 0.678-3.779-1.323-3.779-1.323-0.511-1.296-1.246-1.641-1.246-1.641-1.020-0.696 0.077-0.682 0.077-0.682 1.126 0.078 1.72 1.156 1.72 1.156 1.001 1.715 2.627 1.219 3.265 0.931 0.102-0.723 0.392-1.219 0.712-1.498-2.49-0.283-5.11-1.246-5.11-5.545 0-1.226 0.438-2.225 1.154-3.011-0.114-0.285-0.501-1.426 0.111-2.97 0 0 0.941-0.301 3.085 1.15 0.894-0.25 1.854-0.373 2.807-0.377 0.953 0.004 1.913 0.129 2.809 0.379 2.14-1.453 3.083-1.15 3.083-1.15 0.613 1.545 0.227 2.685 0.112 2.969 0.719 0.785 1.153 1.785 1.153 3.011 0 4.31-2.624 5.259-5.123 5.537 0.404 0.348 0.761 1.030 0.761 2.076 0 1.5-0.015 2.709-0.015 3.079 0 0.299 0.204 0.648 0.772 0.538 4.455-1.486 7.666-5.69 7.666-10.645 0-6.195-5.023-11.219-11.219-11.219z"></path></svg></a><a target="_blank" rel="noopener noreferrer" class="chakra-link css-1pf61s3" href="https://www.linkedin.com/in/francortez/" aria-label="LinkedIn"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" focusable="false" class="chakra-icon css-9t64xk" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M417.2 64H96.8C79.3 64 64 76.6 64 93.9V415c0 17.4 15.3 32.9 32.8 32.9h320.3c17.6 0 30.8-15.6 30.8-32.9V93.9C448 76.6 434.7 64 417.2 64zM183 384h-55V213h55v171zm-25.6-197h-.4c-17.6 0-29-13.1-29-29.5 0-16.7 11.7-29.5 29.7-29.5s29 12.7 29.4 29.5c0 16.4-11.4 29.5-29.7 29.5zM384 384h-55v-93.5c0-22.4-8-37.7-27.9-37.7-15.2 0-24.2 10.3-28.2 20.3-1.5 3.6-1.9 8.5-1.9 13.5V384h-55V213h55v23.8c8-11.4 20.5-27.8 49.6-27.8 36.1 0 63.4 23.8 63.4 75.1V384z"></path></svg></a><style data-emotion="css sodl3b">.css-sodl3b{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-transition:all 250ms;transition:all 250ms;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;white-space:nowrap;vertical-align:middle;outline:none;width:auto;line-height:1.2;border-radius:var(--chakra-radii-md);font-weight:var(--chakra-fontWeights-semibold);height:var(--chakra-sizes-10);min-width:var(--chakra-sizes-10);font-size:var(--chakra-fontSizes-lg);-webkit-padding-start:var(--chakra-space-4);padding-inline-start:var(--chakra-space-4);-webkit-padding-end:var(--chakra-space-4);padding-inline-end:var(--chakra-space-4);color:var(--chakra-colors-current);padding:0px;margin-left:0px;}.css-sodl3b:focus,.css-sodl3b[data-focus]{box-shadow:var(--chakra-shadows-outline);}.css-sodl3b[disabled],.css-sodl3b[aria-disabled=true],.css-sodl3b[data-disabled]{opacity:0.4;cursor:not-allowed;box-shadow:var(--chakra-shadows-none);}.css-sodl3b:hover,.css-sodl3b[data-hover]{background:var(--chakra-colors-whiteAlpha-200);}.css-sodl3b:hover[disabled],.css-sodl3b[data-hover][disabled],.css-sodl3b:hover[aria-disabled=true],.css-sodl3b[data-hover][aria-disabled=true],.css-sodl3b:hover[data-disabled],.css-sodl3b[data-hover][data-disabled]{background:initial;}.css-sodl3b:active,.css-sodl3b[data-active]{background:var(--chakra-colors-whiteAlpha-300);}@media screen and (min-width: 48em){.css-sodl3b{margin-left:var(--chakra-space-3);}}</style><button type="button" class="chakra-button css-sodl3b" aria-label="Switch to light mode"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" aria-hidden="true" focusable="false" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"></path></svg></button></div></div></div><style data-emotion="css fnlf1d">.css-fnlf1d{width:100%;-webkit-margin-start:auto;margin-inline-start:auto;-webkit-margin-end:auto;margin-inline-end:auto;max-width:var(--chakra-sizes-3xl);-webkit-padding-start:1rem;padding-inline-start:1rem;-webkit-padding-end:1rem;padding-inline-end:1rem;}</style><div class="chakra-container css-fnlf1d"><style data-emotion="css q93sk2">.css-q93sk2{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;text-align:center;padding-top:var(--chakra-space-20);padding-bottom:var(--chakra-space-20);}.css-q93sk2>*:not(style)~*:not(style){margin-top:var(--chakra-space-8);-webkit-margin-end:0px;margin-inline-end:0px;margin-bottom:0px;-webkit-margin-start:0px;margin-inline-start:0px;}@media screen and (min-width: 48em){.css-q93sk2>*:not(style)~*:not(style){margin-top:var(--chakra-space-14);}}@media screen and (min-width: 48em){.css-q93sk2{padding-top:var(--chakra-space-36);padding-bottom:var(--chakra-space-36);}}</style><style data-emotion="css 1az190c">.css-1az190c{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;text-align:center;padding-top:var(--chakra-space-20);padding-bottom:var(--chakra-space-20);}.css-1az190c>*:not(style)~*:not(style){margin-top:var(--chakra-space-8);-webkit-margin-end:0px;margin-inline-end:0px;margin-bottom:0px;-webkit-margin-start:0px;margin-inline-start:0px;}@media screen and (min-width: 48em){.css-1az190c>*:not(style)~*:not(style){margin-top:var(--chakra-space-14);}}@media screen and (min-width: 48em){.css-1az190c{padding-top:var(--chakra-space-36);padding-bottom:var(--chakra-space-36);}}</style><div class="chakra-stack css-1az190c"><style data-emotion="css 1d1vs5u">.css-1d1vs5u{font-family:var(--chakra-fonts-heading);font-weight:600;font-size:1xl;line-height:110%;}@media screen and (min-width: 30em){.css-1d1vs5u{font-size:var(--chakra-fontSizes-3xl);}}@media screen and (min-width: 48em){.css-1d1vs5u{font-size:var(--chakra-fontSizes-5xl);}}</style><h2 class="chakra-heading css-1d1vs5u">Hi 👋 I am <!-- -->Fran Cortez<!-- --> <br/><style data-emotion="css jx61ed">.css-jx61ed{color:var(--chakra-colors-green-500);}</style><span class="chakra-text css-jx61ed">Frontend &amp; Product Engineer</span></h2><style data-emotion="css gmuwbf">.css-gmuwbf{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;}</style><div class="css-gmuwbf"><style data-emotion="css 1wrmvwx">.css-1wrmvwx{border-radius:var(--chakra-radii-full);display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;text-align:center;text-transform:uppercase;font-weight:var(--chakra-fontWeights-medium);position:relative;-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;background:#ea745a;color:var(--chakra-colors-gray-800);border-color:var(--chakra-colors-gray-800);vertical-align:top;width:var(--chakra-sizes-32);height:var(--chakra-sizes-32);font-size:calc(8rem / 2.5);}</style><span class="chakra-avatar css-1wrmvwx"><style data-emotion="css 1e8yyfy">.css-1e8yyfy{font-size:calc(8rem / 2.5);line-height:8rem;}</style><div role="img" aria-label="Fran Cortez" class="chakra-avatar__initials css-1e8yyfy">FC</div></span></div><style data-emotion="css 16ikxzz">.css-16ikxzz{color:var(--chakra-colors-gray-400);font-size:var(--chakra-fontSizes-lg);}@media screen and (min-width: 62em){.css-16ikxzz{font-size:var(--chakra-fontSizes-xl);}}</style><p class="chakra-text css-16ikxzz">More than ten years building for the web — accessibility for Walt Disney Parks and Resorts Online, the check-in platform at LAN Airlines, and the component system behind Savings United’s campaign sites. I build with AI as the default: I direct the tools, review what they produce, and own what ships. Today I turn vague goals from founders and small teams into live sites such as base-pages.com and carma-retreats.com.</p></div></div><style data-emotion="css limngl">.css-limngl{padding-top:var(--chakra-space-6);padding-bottom:var(--chakra-space-6);}</style><div class="css-limngl"><style data-emotion="css ajiuuy">.css-ajiuuy{font-family:var(--chakra-fonts-body);font-weight:var(--chakra-fontWeights-bold);font-size:var(--chakra-fontSizes-2xl);line-height:1.33;padding-top:var(--chakra-space-6);padding-bottom:var(--chakra-space-6);}@media screen and (min-width: 48em){.css-ajiuuy{line-height:1.2;}}</style><h2 class="chakra-heading css-ajiuuy">Selected work</h2><style data-emotion="css amuq7n">.css-amuq7n{display:grid;grid-gap:var(--chakra-space-6);grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;}</style><div class="css-amuq7n"><style data-emotion="css 73q72j">.css-73q72j{display:grid;width:var(--chakra-sizes-full);background:var(--chakra-colors-gray-900);box-shadow:var(--chakra-shadows-2xl);padding-top:var(--chakra-space-6);padding-bottom:var(--chakra-space-1);-webkit-padding-start:var(--chakra-space-4);padding-inline-start:var(--chakra-space-4);-webkit-padding-end:var(--chakra-space-4);padding-inline-end:var(--chakra-space-4);}</style><a href="https://base-pages.com" target="_blank" rel="noopener noreferrer" class="css-73q72j"><p class="chakra-text css-35ezg3">base-pages.com</p><style data-emotion="css 9826r4">.css-9826r4{color:var(--chakra-colors-gray-400);}</style><p class="chakra-text css-9826r4">My consulting home. I turn vague goals from founders and small teams into scoped, priced work, then ship it end to end — directing the tools, reviewing what they produce, and owning what goes live. Built with 100% AI-generated code.</p><style data-emotion="css 1dxxh22">.css-1dxxh22{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:end;-ms-flex-pack:end;-webkit-justify-content:end;justify-content:end;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;margin-top:var(--chakra-space-6);}.css-1dxxh22>*:not(style)~*:not(style){margin-top:0px;-webkit-margin-end:0px;margin-inline-end:0px;margin-bottom:0px;-webkit-margin-start:0.5rem;margin-inline-start:0.5rem;}</style><div class="chakra-stack css-1dxxh22"><style data-emotion="css 5i7oq1">.css-5i7oq1{display:inline-block;white-space:nowrap;vertical-align:middle;-webkit-padding-start:var(--chakra-space-1);padding-inline-start:var(--chakra-space-1);-webkit-padding-end:var(--chakra-space-1);padding-inline-end:var(--chakra-space-1);text-transform:uppercase;font-size:var(--chakra-fontSizes-xs);border-radius:var(--chakra-radii-sm);font-weight:400;background:var(--chakra-colors-gray-800);color:var(--chakra-colors-gray-200);}</style><span class="chakra-badge css-5i7oq1">AI-generated code</span><span class="chakra-badge css-5i7oq1">Consulting</span><span class="chakra-badge css-5i7oq1">Web</span></div></a><a href="https://carma-retreats.com" target="_blank" rel="noopener noreferrer" class="css-73q72j"><p class="chakra-text css-35ezg3">carma-retreats.com</p><p class="chakra-text css-9826r4">A one-page site with an inquiry form for a Berlin yoga-retreat host, replacing bookings that kept getting lost in Instagram DMs. The first retreat after launch sold out. Built with 100% AI-generated code.</p><div class="chakra-stack css-1dxxh22"><span class="chakra-badge css-5i7oq1">AI-generated code</span><span class="chakra-badge css-5i7oq1">Client work</span><span class="chakra-badge css-5i7oq1">Web</span></div></a></div></div><style data-emotion="css m7wkyr">.css-m7wkyr{background:var(--chakra-colors-gray-900);-webkit-padding-start:var(--chakra-space-4);padding-inline-start:var(--chakra-space-4);-webkit-padding-end:var(--chakra-space-4);padding-inline-end:var(--chakra-space-4);}</style><div class="css-m7wkyr"><div class="css-lygqz2"><p class="chakra-text css-0">© <!-- -->2026<!-- --> <!-- -->Fran Cortez</p></div></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div><span></span></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-3baef2959b955b87192d.js"],"app":["/app-4a38cedfeaafa86cc083.js"],"component---src-pages-404-js":["/component---src-pages-404-js-b2a60fa2621fca6fb25c.js"],"component---src-pages-index-js":["/component---src-pages-index-js-183fd1b758c9b6ed32ac.js"]};/*]]>*/</script><script src="/polyfill-3baef2959b955b87192d.js" nomodule=""></script><script src="/component---src-pages-index-js-183fd1b758c9b6ed32ac.js" async=""></script><script src="/app-4a38cedfeaafa86cc083.js" async=""></script><script src="/70b165ca-0521d154700fabc2f509.js" async=""></script><script src="/1bfc9850-8e590af34549583f055d.js" async=""></script><script src="/95b64a6e-8e211bfb7144147c594c.js" async=""></script><script src="/framework-a24af7c0f5e8b90df819.js" async=""></script><script src="/webpack-runtime-0810794cc5ca7b8f84a7.js" async=""></script></body></html>
+    <section id="trackers" aria-labelledby="trackers-title">
+      <div class="wrap">
+        <p class="kicker mono">02 — Possible. Not polite.</p>
+        <h2 id="trackers-title">What trackers<br>do next.</h2>
+        <p class="lede">Everything above is free for any site. This is what trackers build from it, and it works in most browsers today. Most sites never ask. I will.</p>
+        <div class="vault" data-vault>
+          <div class="grid vault-grid" data-vault-grid inert aria-hidden="true"></div>
+          <div class="gate" data-gate>
+            <div class="gate-box">
+              <h3 data-gate-title>Run the tracker tests?</h3>
+              <p class="mono" data-gate-copy>I'll fingerprint this browser, look for extensions and installed fonts, and remember this visit. It all stays in your browser, nothing is sent anywhere, and one click forgets it.</p>
+              <div class="ctas">
+                <button class="btn btn-solid" type="button" data-consent>Yes, show me</button>
+                <button class="btn btn-ghost" type="button" data-decline>No thanks</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="vault-foot mono" data-forget-wrap hidden><button class="linkish" type="button" data-forget>Forget me</button> — deletes the stored fingerprint and visit count from this browser.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="cant-title">
+      <div class="wrap">
+        <p class="kicker mono">03 — Where the web draws the line</p>
+        <h2 id="cant-title">What I<br>can't see.</h2>
+        <p class="lede">Browsers block all of this unless you say yes, and they show you an indicator while it's on. That's the web working as it should.</p>
+        <ul class="cant">
+          <li><span>Your camera</span><span class="mono">Needs your explicit yes. Then a light or icon shows it.</span></li>
+          <li><span>Your microphone</span><span class="mono">Same rule. No silent listening, ever.</span></li>
+          <li><span>Your history</span><span class="mono">The old :visited trick was closed off in 2010.</span></li>
+          <li><span>Your other tabs</span><span class="mono">Each site lives in its own sandbox.</span></li>
+          <li><span>Your local network</span><span class="mono">In 2025, Meta and Yandex were caught using localhost to link web visits to Android apps. Since Chrome 142, sites must ask first.</span></li>
+          <li><span>Your passwords</span><span class="mono">Never exposed to the page you're on.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <p class="kicker mono">04 — The decisions behind it</p>
+        <h2 id="how-title">How this<br>works.</h2>
+        <p class="lede">A page about trust has to earn it. These are the calls I made and why.</p>
+        <div class="how">
+          <article>
+            <span class="mono">01</span>
+            <h3>One file. No framework.</h3>
+            <p>Plain HTML, CSS and JavaScript. GSAP runs the intro timeline; everything else is native browser APIs. It loads fast because there's almost nothing to load.</p>
+          </article>
+          <article>
+            <span class="mono">02</span>
+            <h3>Nothing leaves your device.</h3>
+            <p>No server, no cookies, no analytics. The only outside requests are the fonts (Google) and GSAP (Cloudflare), so those two see your IP, like on most sites.</p>
+          </article>
+          <article>
+            <span class="mono">03</span>
+            <h3>Honest over impressive.</h3>
+            <p>Your city comes from your clock's timezone, not GPS: less precise, nothing sent. When a browser hides something, the page says so instead of guessing.</p>
+          </article>
+          <article>
+            <span class="mono">04</span>
+            <h3>Consent before the creepy part.</h3>
+            <p>The tracker tests run only after you say yes. What they store stays in your browser, and "Forget me" deletes it.</p>
+          </article>
+          <article>
+            <span class="mono">05</span>
+            <h3>Motion with an off switch.</h3>
+            <p>The intro plays once per session, any key skips it, and it never plays if your system asks for reduced motion.</p>
+          </article>
+          <article>
+            <span class="mono">06</span>
+            <h3>Built with AI as the default.</h3>
+            <p>I direct the tools, review what they produce, and own what ships. The concept, the limits and the trade-offs on this page are decisions, not defaults.</p>
+          </article>
+          <article>
+            <span class="mono">07</span>
+            <h3>Every "who uses it" has a source.</h3>
+            <p>Company policies and reporting, as of October 2026: <a href="https://www.nbcnews.com/id/wbna47956454">Orbitz and Mac users</a>, <a href="https://www.techradar.com/news/car-tech/you-re-more-likely-to-pay-uber-s-surge-prices-on-a-low-battery-1321900">Uber and low batteries</a>, <a href="https://english.factcrescendo.com/2025/01/15/can-tiktok-track-keystrokes-or-taps-made-by-a-user/">TikTok's device data</a>, <a href="https://opensource.fb.com/legal/privacy/">Meta's device data</a>, <a href="https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2024/12/our-response-to-google-s-policy-change-on-fingerprinting/">Google and fingerprinting</a>, <a href="https://www.tomshardware.com/software/browsers/linkedin-scans-visitors-browsers-for-over-6000-chrome-extensions-and-collects-device-data">LinkedIn and extensions</a>, <a href="https://support.google.com/google-ads/answer/7101715">Google Ads device targeting</a>, <a href="https://www.pymnts.com/fraud-prevention/2018/banks-biometrics-security-fraud-biocatch-alisdair-faulkner-threatmetrix/">banks and typing rhythm</a>, <a href="https://www.ieee-security.org/TC/SP2019/papers/405.pdf">phone sensor fingerprints</a>.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <p class="mono">Nothing on this page is sent or tracked. Close the tab and it's gone.</p>
+      <p class="mono"><button class="linkish" type="button" data-replay>Replay intro</button> · © <span data-year></span> Fran Cortez</p>
+    </div>
+  </footer>
+
+  <nav class="dock mono" aria-label="Contact links" data-dock>
+    <a href="https://github.com/franglow"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub</a>
+    <a href="https://www.linkedin.com/in/francortez"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.15C0 .52.52 0 1.18 0h13.64C15.48 0 16 .52 16 1.15v13.7c0 .63-.52 1.15-1.18 1.15H1.18C.52 16 0 15.48 0 14.85V1.15Zm4.94 12.24V6.17H2.54v7.22h2.4Zm-1.2-8.2c.84 0 1.36-.56 1.36-1.25-.02-.71-.52-1.25-1.34-1.25-.82 0-1.36.54-1.36 1.25 0 .7.52 1.25 1.33 1.25h.01Zm4.91 8.2V9.36c0-.22.02-.43.08-.59.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.64v3.86h2.4V9.25c0-2.22-1.18-3.25-2.76-3.25-1.27 0-1.84.7-2.16 1.19v.03h-.02l.02-.03V6.17h-2.4c.03.68 0 7.22 0 7.22h2.4Z"/></svg>LinkedIn</a>
+    <a class="dock-cta" href="mailto:elfrancortez@gmail.com">Let's talk</a>
+  </nav>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script>
+  (() => {
+    const $ = (s, r = document) => r.querySelector(s);
+    const root = document.documentElement;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+      del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+    };
+
+    // ───────── Signals: everything below is readable without a permission prompt ─────────
+    const ua = navigator.userAgent;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const city = tz.includes('/') ? tz.split('/').pop().replace(/_/g, ' ') : '';
+    const timeFmt = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' });
+    const clockFmt = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const touch = matchMedia('(pointer: coarse)').matches;
+    const lang = navigator.language || 'en';
+    const cores = navigator.hardwareConcurrency;
+    const memory = navigator.deviceMemory;
+    const conn = navigator.connection;
+    const isFirefox = /Firefox\//.test(ua);
+    const isSafari = /Safari\//.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|Edg\//.test(ua);
+
+    const os = (() => {
+      const p = navigator.userAgentData?.platform;
+      if (p) return p;
+      if (/iPhone|iPod/.test(ua)) return 'iOS';
+      if (/iPad/.test(ua)) return 'iPadOS';
+      if (/Mac OS X/.test(ua)) return navigator.maxTouchPoints > 1 ? 'iPadOS' : 'macOS';
+      if (/Android/.test(ua)) return 'Android';
+      if (/Windows/.test(ua)) return 'Windows';
+      if (/CrOS/.test(ua)) return 'ChromeOS';
+      if (/Linux/.test(ua)) return 'Linux';
+      return 'an unknown OS';
+    })();
+
+    const browser = (() => {
+      if (navigator.brave) return 'Brave';
+      const brands = (navigator.userAgentData?.brands || [])
+        .map(b => b.brand)
+        .filter(b => !/Not|Chromium/i.test(b));
+      if (brands.length) return brands[0].replace(/^Google /, '');
+      if (/Edg\//.test(ua)) return 'Edge';
+      if (/Firefox\/|FxiOS/.test(ua)) return 'Firefox';
+      if (/Chrome\/|CriOS/.test(ua)) return 'Chrome';
+      if (/Safari\//.test(ua)) return 'Safari';
+      return 'your browser';
+    })();
+
+    const gpu = (() => {
+      try {
+        const gl = document.createElement('canvas').getContext('webgl');
+        if (!gl) return null;
+        const ext = gl.getExtension('WEBGL_debug_renderer_info');
+        let name = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+        if (!name) return null;
+        // "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)" → "Apple M3 Pro"
+        if (name.startsWith('ANGLE (')) {
+          const parts = name.slice(7, -1).split(', ');
+          name = parts[1] || parts[0];
+        }
+        name = name
+          .replace(/ANGLE Metal Renderer:\s*/, '')
+          .replace(/\((R|TM)\)/g, '')
+          .replace(/\s*\(0x[0-9a-f]+\)/i, '')
+          .replace(/\s+(Direct3D|vs_\d|OpenGL).*$/i, '')
+          .trim();
+        return { name, masked: /^(Apple GPU|WebKit|Mozilla|Generic)/i.test(name) };
+      } catch (e) {
+        return null;
+      }
+    })();
+
+    // iPhones don't report a model, but each family has its own screen size and pixel density.
+    const IPHONES = {
+      '375x667@2': 'iPhone SE or 8',
+      '375x812@3': 'iPhone X, 11 Pro or mini',
+      '414x896@2': 'iPhone XR or 11',
+      '414x896@3': 'iPhone XS Max or 11 Pro Max',
+      '390x844@3': 'iPhone 12, 13 or 14',
+      '428x926@3': 'iPhone 13 Pro Max or 14 Plus',
+      '393x852@3': 'iPhone 14 Pro, 15 or 16',
+      '430x932@3': 'iPhone 15 Plus or Pro Max',
+      '402x874@3': 'iPhone 16 Pro or 17',
+      '420x912@3': 'iPhone Air',
+      '440x956@3': 'iPhone 16 or 17 Pro Max',
+    };
+    const screenKey = `${Math.min(screen.width, screen.height)}x${Math.max(screen.width, screen.height)}@${Math.round(devicePixelRatio)}`;
+
+    const device = (() => {
+      if (os === 'iOS') {
+        return IPHONES[screenKey]
+          ? { value: IPHONES[screenKey], note: `Matched from your screen alone (${screenKey}). No model name needed.` }
+          : { value: 'An iPhone', note: 'Your screen size didn\'t match a model I know. Safari may be blurring it.' };
+      }
+      if (os === 'iPadOS') return { value: 'An iPad', note: 'It says it\'s a Mac. The touchscreen gives it away.' };
+      if (os === 'macOS') {
+        const chip = gpu && !gpu.masked && /^Apple M/.test(gpu.name) ? gpu.name : '';
+        return { value: chip ? `Mac with ${chip}` : 'A Mac', note: 'Pieced together from the system and the graphics chip.' };
+      }
+      if (os === 'Android') return { value: 'An Android phone', note: 'Chrome would hand me the exact model. Your browser didn\'t.' };
+      if (os === 'Windows') return { value: 'A Windows PC', note: 'Chrome can even tell Windows 10 from 11.' };
+      return { value: os, note: 'Pieced together from the system and the screen.' };
+    })();
+
+    // Chrome's high-entropy client hints: phone model and exact OS version, no prompt.
+    const deviceReady = (navigator.userAgentData?.getHighEntropyValues?.(['model', 'platformVersion']) || Promise.resolve(null))
+      .then((h) => {
+        if (!h) return;
+        const major = parseInt(h.platformVersion, 10);
+        if (os === 'Android' && h.model) {
+          device.value = h.model;
+          device.model = h.model;
+          device.note = `Android ${major}. Chrome handed me the model name, no permission asked.`;
+        } else if (os === 'Windows' && major) {
+          device.value = major >= 13 ? 'A Windows 11 PC' : 'A Windows 10 PC';
+          device.note = 'Chrome tells any site that asks which Windows you run.';
+        } else if (os === 'macOS' && h.platformVersion) {
+          device.note = `macOS ${h.platformVersion.split('.').slice(0, 2).join('.')}. Chrome shares the exact version with any site that asks.`;
+        }
+      })
+      .catch(() => {});
+
+    const greeting = { es: 'Hola', de: 'Hallo', fr: 'Bonjour', pt: 'Olá', it: 'Ciao', nl: 'Hallo' }[lang.slice(0, 2)] || 'Hello';
+    const langName = (code) => {
+      try { return new Intl.DisplayNames(['en'], { type: 'language' }).of(code); } catch (e) { return code; }
+    };
+    const withArticle = (s) => (/^an? /i.test(s) ? s.replace(/^A/, 'a') : `${/^[aeiou]/i.test(s) ? 'an' : 'a'} ${s}`);
+
+    // ───────── Intro ─────────
+    function buildIntro() {
+      const hello = $('[data-hello]');
+      const colors = ['c-navy', 'c-navy', 'c-white', 'c-navy', 'c-white', 'c-navy', 'c-white'];
+      [...(greeting + '.')].forEach((ch, i) => {
+        const s = document.createElement('span');
+        s.textContent = ch;
+        s.className = colors[i % colors.length];
+        hello.append(s);
+      });
+
+      const time = timeFmt.format(new Date());
+      $('[data-whip]').textContent = city ? `${city}, ${time}` : time;
+
+      const factsText = [
+        dark ? 'Dark mode.' : 'Light mode.',
+        device.model ? `${device.model}.` : gpu && !gpu.masked ? `${gpu.name}.` : `${os}.`,
+        cores ? `${cores} cores.` : `${browser}.`,
+      ];
+      const tones = [['black', 'mint'], ['mint', 'navy'], ['black', 'mint']];
+      const factsBox = $('[data-facts]');
+      factsText.forEach((t, i) => {
+        const f = document.createElement('span');
+        f.className = 'fit fact';
+        f.textContent = t;
+        f.dataset.tone = tones[i][1];
+        f.dataset.bg = tones[i][0];
+        factsBox.append(f);
+      });
+    }
+
+    // Scale a single-line element so it spans `ratio` of the viewport width.
+    function fit(el, ratio, maxPx) {
+      el.style.fontSize = '100px';
+      const size = Math.min(maxPx, (innerWidth * ratio / el.scrollWidth) * 100);
+      el.style.fontSize = `${size}px`;
+    }
+
+    function fitAll() {
+      const h = innerHeight;
+      fit($('.hello .fit'), .78, h * .42);
+      fit($('[data-whip]'), .9, h * .3);
+      document.querySelectorAll('.fact').forEach(f => fit(f, .82, h * .28));
+      fit($('.closing .fit'), .88, h * .2);
+    }
+
+    function playIntro() {
+      const intro = $('#intro');
+      const blurNode = $('#mblurNode');
+      const blur = { v: 0 };
+      const setBlur = () => blurNode.setAttribute('stdDeviation', `${blur.v} 0`);
+      const lines = intro.querySelectorAll('.closing .line');
+      const accent = $('[data-accent]');
+      const swoosh = accent.querySelector('path');
+      const whip = $('[data-whip]');
+      const offscreen = () => innerWidth * 1.15;
+
+      const tl = gsap.timeline({ onComplete: finishIntro });
+
+      // Beat 1 — black, then a hard cut to mint and the greeting builds letter by letter
+      tl.set(intro, { attr: { 'data-bg': 'black' } })
+        .to({}, { duration: .35 })
+        .set(intro, { attr: { 'data-bg': 'mint' } })
+        .set('.hello', { opacity: 1 });
+      intro.querySelectorAll('.hello span').forEach((s, i) => {
+        tl.fromTo(s,
+          { visibility: 'hidden', yPercent: 18, scale: 1.15 },
+          { visibility: 'visible', yPercent: 0, scale: 1, duration: .2, ease: 'power4.out' },
+          i ? '<.085' : '>');
+      });
+      tl.to({}, { duration: .4 });
+
+      // Beat 2 — navy, city + time whips across with horizontal motion blur
+      tl.set('.hello', { opacity: 0 })
+        .set(intro, { attr: { 'data-bg': 'navy' } })
+        .set(whip, { x: offscreen, skewX: -14 })
+        .set(whip.parentNode, { opacity: 1 })
+        .to(whip, { x: 0, skewX: 0, duration: .8, ease: 'expo.out' })
+        .fromTo(blur, { v: 90 }, { v: 0, duration: .8, ease: 'expo.out', onUpdate: setBlur }, '<')
+        .to({}, { duration: .3 })
+        .to(whip, { x: () => -offscreen(), skewX: 14, duration: .32, ease: 'expo.in' })
+        .to(blur, { v: 90, duration: .32, ease: 'expo.in', onUpdate: setBlur }, '<')
+        .set(whip.parentNode, { opacity: 0 });
+
+      // Beat 3 — three facts, hard cuts like a fast edit
+      tl.set('[data-facts]', { opacity: 1 });
+      intro.querySelectorAll('.fact').forEach((f, i, all) => {
+        tl.set(all, { visibility: 'hidden' })
+          .set(intro, { attr: { 'data-bg': f.dataset.bg } })
+          .set(f, { visibility: 'visible' })
+          .to({}, { duration: i === all.length - 1 ? .45 : .34 });
+      });
+      tl.set('[data-facts]', { opacity: 0 });
+
+      // Beat 4 — closing line rises in, accent flips color, swoosh draws itself
+      tl.set(intro, { attr: { 'data-bg': 'navy' } })
+        .set('.closing', { opacity: 1 })
+        .fromTo(lines,
+          { yPercent: 60, clipPath: 'inset(0% 0% 100% 0%)' },
+          { yPercent: 0, clipPath: 'inset(-80% -10% -10% -10%)', duration: .6, ease: 'expo.out', stagger: .09 })
+        .set(accent, { attr: { 'data-on': '' } }, '+=.12')
+        .fromTo(swoosh, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .55, ease: 'power2.inOut' }, '<')
+        .to({}, { duration: .9 })
+        .addLabel('outro')
+        .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: .75, ease: 'expo.inOut' });
+
+      let skipped = false;
+      const skip = () => {
+        if (skipped || tl.time() >= tl.labels.outro) return;
+        skipped = true;
+        tl.seek('outro');
+      };
+      intro.addEventListener('pointerdown', skip);
+      addEventListener('keydown', skip, { once: true });
+      addEventListener('wheel', skip, { once: true, passive: true });
+    }
+
+    function finishIntro() {
+      try { sessionStorage.setItem('lab:intro', '1'); } catch (e) {}
+      root.classList.remove('is-intro');
+      requestAnimationFrame(() => root.classList.add('is-ready'));
+    }
+
+    async function startIntro() {
+      if (!root.classList.contains('is-intro')) return finishIntro();
+      if (!window.gsap) return finishIntro(); // CDN failed: show the page, skip the show
+      const wait = (ms) => new Promise(r => setTimeout(r, ms));
+      await Promise.race([deviceReady, wait(400)]);
+      buildIntro();
+      await Promise.race([document.fonts.ready, wait(1500)]);
+      fitAll();
+      addEventListener('resize', fitAll);
+      playIntro();
+    }
+
+    $('[data-replay]').addEventListener('click', () => {
+      try { sessionStorage.removeItem('lab:intro'); } catch (e) {}
+      location.href = `${location.pathname}?intro`;
+    });
+
+    // ───────── Hero whisper ─────────
+    function renderWhisper() {
+      $('[data-whisper]').textContent = [
+        city ? `It's ${timeFmt.format(new Date())} in ${city}.` : `It's ${timeFmt.format(new Date())} where you are.`,
+        `You're on ${withArticle(device.value)}, in ${dark ? 'dark' : 'light'} mode.`,
+        'Your browser told me. Scroll to hear what else it says.',
+      ].join(' ');
+    }
+    renderWhisper();
+    deviceReady.then(renderWhisper);
+    $('[data-year]').textContent = new Date().getFullYear();
+
+    // ───────── Live behaviour ─────────
+    const live = { speed: 0, peak: 0, scroll: 0, switches: 0, awayTotal: 0, start: performance.now() };
+    let last = null;
+    addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const now = performance.now();
+      if (last) {
+        const dt = (now - last.t) / 1000;
+        if (dt > 0) {
+          const v = Math.hypot(e.clientX - last.x, e.clientY - last.y) / dt;
+          live.speed = live.speed * .85 + v * .15;
+          live.peak = Math.max(live.peak, live.speed);
+        }
+      }
+      last = { x: e.clientX, y: e.clientY, t: now };
+      if (!tilt.on) setTilt((e.clientY / innerHeight - .5) * -6, (e.clientX / innerWidth - .5) * 8);
+    }, { passive: true });
+
+    // The mobile dock tucks away while reading down and comes back on any scroll up.
+    const dock = $('[data-dock]');
+    let lastY = scrollY;
+    addEventListener('scroll', () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      live.scroll = Math.max(live.scroll, max > 0 ? scrollY / max : 0);
+      const dy = scrollY - lastY;
+      if (Math.abs(dy) > 8) {
+        dock.classList.toggle('is-tucked', dy > 0 && scrollY > 200 && scrollY < max - 40);
+        lastY = scrollY;
+      }
+    }, { passive: true });
+
+    const fmtDur = (s) => (s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`);
+
+    let hiddenAt = 0;
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        hiddenAt = performance.now();
+        live.switches++;
+      } else if (hiddenAt) {
+        const s = Math.round((performance.now() - hiddenAt) / 1000);
+        live.awayTotal += s;
+        if (s >= 2) toast(`Welcome back. You were gone ${fmtDur(s)}. Your browser told me that too.`);
+      }
+    });
+
+    document.addEventListener('copy', () => {
+      const sel = String(getSelection()).trim().replace(/\s+/g, ' ');
+      if (!sel) return;
+      const short = sel.length > 36 ? `${sel.slice(0, 36)}…` : sel;
+      toast(`You copied “${short}”. Pages get a copy event and can read the selection.`);
+    });
+
+    let toastTimer;
+    function toast(msg) {
+      const el = $('[data-toast]');
+      el.textContent = msg;
+      el.classList.add('is-on');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('is-on'), 4200);
+    }
+
+    // ───────── Tilt: gyroscope on phones, cursor on desktop ─────────
+    const tilt = { on: false, b: 0, g: 0 };
+    const tiltEl = $('[data-tilt]');
+    let tiltFrame = 0;
+    function setTilt(rx, ry) {
+      if (reduced || tiltFrame) return;
+      tiltFrame = requestAnimationFrame(() => {
+        tiltEl.style.setProperty('--rx', `${rx.toFixed(2)}deg`);
+        tiltEl.style.setProperty('--ry', `${ry.toFixed(2)}deg`);
+        tiltFrame = 0;
+      });
+    }
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    function onOrientation(e) {
+      if (e.beta == null) return;
+      tilt.on = true;
+      tilt.b = e.beta;
+      tilt.g = e.gamma;
+      setTilt(clamp(e.beta - 45, -30, 30) * -.25, clamp(e.gamma, -30, 30) * .35);
+    }
+    const motionNeedsAsk = typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function';
+    if (touch && !motionNeedsAsk) addEventListener('deviceorientation', onOrientation);
+
+    // ───────── Cards ─────────
+    const unsupported = `Private in ${browser}. Good call.`;
+    const shield = navigator.brave
+      ? ['Brave Shields', 'Brave randomizes parts of this list. Some values above may be fake, on purpose.']
+      : isSafari
+        ? ['Anti-fingerprinting', 'Safari adds noise to graphics and audio and blurs device details. That\'s why some cards say Hidden.']
+        : isFirefox
+          ? ['Tracking Protection', 'Firefox hides some hardware details, more so in private windows.']
+          : /Edg\//.test(ua)
+            ? ['Tracking prevention', 'Edge blocks known trackers. This page isn\'t one, so you see it all.']
+            : ['Standard', `${browser} shares more of this list than Safari, Firefox or Brave do.`];
+
+    const signals = [
+      {
+        label: 'Where & when',
+        value: () => city ? `${city}, ${clockFmt.format(new Date())}` : clockFmt.format(new Date()),
+        note: () => `From your clock's timezone (${tz || 'unknown'}), not GPS. No permission needed.`,
+        live: true,
+      },
+      {
+        label: 'Your device',
+        value: () => device.value,
+        note: () => device.note,
+        init(card) { deviceReady.then(() => card.refresh()); },
+      },
+      {
+        label: 'System',
+        value: () => `${os} · ${browser}`,
+        note: () => 'Sent with every single request, before the page even loads.',
+      },
+      {
+        label: 'Graphics chip',
+        value: () => gpu ? gpu.name : 'Hidden',
+        note: () => gpu?.masked ? `${browser} blurs the exact model on purpose.` : 'Read through WebGL, the same API that renders 3D.',
+      },
+      {
+        label: 'Camera & mic',
+        value: () => '…',
+        note: () => 'Checking what exists, without turning anything on.',
+        init(card) {
+          if (!navigator.mediaDevices?.enumerateDevices) {
+            card.value = 'Hidden';
+            card.note = `${browser} won't even say if you have one.`;
+            return;
+          }
+          navigator.mediaDevices.enumerateDevices().then((list) => {
+            const has = (k) => list.some(d => d.kind === k);
+            if (!list.length) {
+              card.value = 'Hidden';
+              card.note = `${browser} won't even say if you have one.`;
+            } else {
+              card.value = `${has('videoinput') ? 'Camera ✓' : 'No camera'} · ${has('audioinput') ? 'Mic ✓' : 'No mic'}`;
+              card.note = 'I can tell they exist. Turning them on needs your yes, and a light comes on.';
+            }
+            card.refresh();
+          }).catch(() => {});
+        },
+      },
+      {
+        label: 'Screen',
+        value: () => `${screen.width}×${screen.height} @${devicePixelRatio}x`,
+        note: () => `That's ${Math.round(screen.width * devicePixelRatio)}×${Math.round(screen.height * devicePixelRatio)} real pixels.`,
+      },
+      {
+        label: 'Window',
+        value: () => `${innerWidth}×${innerHeight}`,
+        note: () => touch ? 'Rotate your phone. I see that too.' : 'Resize it. I see that too.',
+        live: true,
+      },
+      {
+        label: 'Notch',
+        value: () => {
+          const top = safeTop();
+          return top >= 55 ? 'Dynamic Island' : top > 20 ? 'Notch' : 'None';
+        },
+        note: () => safeTop() > 20 ? 'Read from the safe area your screen reserves around it.' : 'No cutout reserved at the top of this screen.',
+      },
+      {
+        label: 'Preferences',
+        value: () => `${dark ? 'Dark' : 'Light'} mode`,
+        note: () => `Reduced motion: ${reduced ? 'on' : 'off'}. Contrast: ${matchMedia('(prefers-contrast: more)').matches ? 'more' : 'standard'}.`,
+      },
+      {
+        label: 'Language',
+        value: () => langName(lang),
+        note: () => {
+          const primary = langName(lang);
+          const others = (navigator.languages || []).slice(1).map(l => langName(l).split(' (')[0]);
+          const uniq = [...new Set(others)].filter(l => !primary.includes(l));
+          return uniq.length ? `Also: ${uniq.join(', ')}.` : 'Your first choice, in order of preference.';
+        },
+      },
+      {
+        label: 'Keyboard',
+        value: () => 'Hidden',
+        note: () => `Only Chrome on desktop shares this. ${browser === 'Chrome' ? 'Not here, though.' : `${browser} keeps it.`}`,
+        init(card) {
+          if (!navigator.keyboard?.getLayoutMap) return;
+          navigator.keyboard.getLayoutMap().then((map) => {
+            const q = map.get('KeyQ');
+            const y = map.get('KeyY');
+            const layout = q === 'a' ? 'AZERTY' : y === 'z' ? 'QWERTZ' : 'QWERTY';
+            const hint = { 'ñ': 'Spanish', 'ö': 'German', 'ç': 'Portuguese', 'æ': 'Danish', 'ø': 'Norwegian', 'ò': 'Italian' }[map.get('Semicolon')]
+              || { AZERTY: 'French', QWERTZ: 'German' }[layout] || '';
+            card.value = hint ? `${layout} · ${hint}` : layout;
+            card.note = 'Read from your physical keyboard layout. Chrome shares it with any page.';
+            card.refresh();
+          }).catch(() => {});
+        },
+      },
+      {
+        label: 'Voices',
+        value: () => 'None listed',
+        note: () => `${browser} keeps its voice list private.`,
+        init(card) {
+          const ss = window.speechSynthesis;
+          if (!ss) return;
+          const render = () => {
+            const v = ss.getVoices();
+            if (!v.length) return;
+            const langs = new Set(v.map(x => x.lang.split(/[-_]/)[0])).size;
+            card.value = `${v.length} voices`;
+            card.note = `In ${langs} languages. Your system installed them, and any site can list them.`;
+            card.refresh();
+          };
+          render();
+          ss.addEventListener?.('voiceschanged', render);
+        },
+      },
+      {
+        label: 'Processor & memory',
+        value: () => [cores && `${cores} cores`, memory && `${memory} GB+`].filter(Boolean).join(' · ') || 'Hidden',
+        note: () => memory ? 'Memory is rounded and capped, on purpose.' : `Memory: ${unsupported}`,
+      },
+      {
+        label: 'Battery',
+        value: () => 'Hidden',
+        note: () => unsupported,
+        init(card) {
+          if (!navigator.getBattery) return;
+          navigator.getBattery().then((b) => {
+            const render = () => {
+              card.value = `${Math.round(b.level * 100)}%${b.charging ? ' · charging' : ''}`;
+              card.note = 'Plug or unplug your charger and watch this change.';
+              card.refresh();
+            };
+            render();
+            b.addEventListener('levelchange', render);
+            b.addEventListener('chargingchange', render);
+          }).catch(() => {});
+        },
+      },
+      {
+        label: 'Connection',
+        value: () => conn?.effectiveType ? `${conn.effectiveType.toUpperCase()} · ~${conn.downlink} Mbps` : (navigator.onLine ? 'Online' : 'Offline'),
+        note: () => conn ? 'Estimated from your real traffic, rounded.' : `Speed: ${unsupported}`,
+      },
+      {
+        label: 'Input',
+        value: () => matchMedia('(pointer: fine)').matches ? 'Mouse / trackpad' : `Touch · ${navigator.maxTouchPoints} points`,
+        note: () => matchMedia('(hover: hover)').matches ? 'You can hover. Phones can\'t.' : 'Multi-touch, no hover.',
+      },
+      {
+        label: 'Tilt',
+        live: true,
+        value: () => {
+          if (tilt.on) return `${Math.round(tilt.b)}° · ${Math.round(tilt.g)}°`;
+          if (!touch) return 'No gyroscope';
+          return motionNeedsAsk ? 'Ask first' : 'Tilt your phone';
+        },
+        note: () => {
+          if (tilt.on) return motionNeedsAsk ? 'You said yes, so the headline now follows your hand.' : 'Android shares this with no prompt. Watch the headline follow you.';
+          if (!touch) return 'Open this page on your phone. The headline follows your mouse for now.';
+          return motionNeedsAsk ? 'iPhone asks before sharing motion. Android doesn\'t.' : 'Android shares motion with no prompt.';
+        },
+        action: touch && motionNeedsAsk ? {
+          label: 'Allow motion',
+          run: () => DeviceOrientationEvent.requestPermission()
+            .then((s) => { if (s === 'granted') addEventListener('deviceorientation', onOrientation); })
+            .catch(() => {}),
+        } : null,
+      },
+      {
+        label: 'Ad blocker',
+        value: () => '…',
+        note: () => 'Testing with a fake ad slot.',
+        init(card) {
+          const bait = document.createElement('div');
+          bait.className = 'ad ads adsbox ad-banner ad-placeholder textads banner-ads';
+          bait.style.cssText = 'position:absolute;left:-9999px;top:0;width:10px;height:10px';
+          bait.innerHTML = '&nbsp;';
+          document.body.append(bait);
+          setTimeout(() => {
+            const blocked = bait.offsetHeight === 0 || getComputedStyle(bait).display === 'none' || !bait.isConnected;
+            bait.remove();
+            card.value = blocked ? 'Detected' : 'None';
+            card.note = blocked
+              ? 'Good call. Sites can see it, though. That\'s how "disable your ad blocker" walls work.'
+              : 'A fake ad slot survived on this page, so nothing filtered it.';
+            card.refresh();
+          }, 700);
+        },
+      },
+      {
+        label: 'Your shield',
+        value: () => shield[0],
+        note: () => shield[1],
+      },
+      {
+        label: 'You came from',
+        value: () => {
+          try { return document.referrer ? new URL(document.referrer).hostname : 'Direct'; } catch (e) { return 'Direct'; }
+        },
+        note: () => document.referrer ? 'The previous site handed me that.' : 'Typed, bookmarked, or the last site kept quiet.',
+      },
+      {
+        label: 'Cursor speed',
+        value: () => matchMedia('(pointer: fine)').matches ? `${Math.round(live.speed)} px/s` : 'Touch',
+        note: () => live.peak ? `Peak: ${Math.round(live.peak)} px/s. Move fast.` : (touch ? 'No cursor on a phone. Your thumb is faster anyway.' : 'Move your mouse.'),
+        live: true,
+      },
+      {
+        label: 'Read so far',
+        value: () => `${Math.round(live.scroll * 100)}%`,
+        note: () => 'Scroll depth. Every analytics tool tracks this one.',
+        live: true,
+      },
+      {
+        label: 'Time here',
+        value: () => fmtDur(Math.round((performance.now() - live.start) / 1000)),
+        note: () => live.switches ? `You left ${live.switches}× for ${fmtDur(live.awayTotal)} in total.` : 'Switch tabs and come back.',
+        live: true,
+      },
+    ];
+
+    function safeTop() {
+      const probe = document.createElement('div');
+      probe.style.cssText = 'position:fixed;top:0;height:env(safe-area-inset-top);visibility:hidden';
+      document.body.append(probe);
+      const h = probe.getBoundingClientRect().height;
+      probe.remove();
+      return h;
+    }
+
+    const SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*';
+    function scramble(el, text, delay = 0, onDone) {
+      delete el.dataset.done;
+      if (reduced) { el.textContent = text; el.dataset.done = '1'; onDone?.(); return; }
+      const dur = 650;
+      const t0 = performance.now() + delay;
+      const tick = (now) => {
+        const p = Math.min(1, Math.max(0, (now - t0) / dur));
+        const n = Math.floor(p * text.length);
+        el.textContent = text.slice(0, n) + [...text.slice(n)].map(c => (c === ' ' ? ' ' : SCRAMBLE[Math.random() * SCRAMBLE.length | 0])).join('');
+        if (p < 1) return requestAnimationFrame(tick);
+        el.dataset.done = '1';
+        onDone?.();
+      };
+      requestAnimationFrame(tick);
+    }
+
+    // Who uses each detail commercially, in plain words. Sources are listed in "How this works".
+    const USES = {
+      'Where & when': ['Google Ads · Meta · TikTok', 'Ads are aimed by place and time of day: a coffee deal at 8 a.m. in your city, not at midnight somewhere else. TikTok\'s policy lists your time zone.'],
+      'Your device': ['Meta · Google Ads', 'Advertisers can target specific phone models. A brand-new flagship hints at a bigger budget, so it can attract pricier offers.'],
+      'System': ['Travel sites · Ad networks', 'In 2012, Orbitz showed Mac users pricier hotels because Mac users spent more per night. Your system is a shortcut to guess your budget.'],
+      'Graphics chip': ['Fingerprinting · Fraud tools', 'Your chip is one piece of a fingerprint that recognizes you without cookies. Google\'s ad rules have allowed fingerprinting since 2025.'],
+      'Camera & mic': ['Video apps · Fingerprinting', 'Video-call sites check this before asking for access. Trackers use which devices you have as one more detail that makes you unique.'],
+      'Screen': ['Meta · TikTok · Fingerprinting', 'Sites fit ads and layouts to it. Meta and TikTok list screen details in what they collect, and it helps tell one device from another.'],
+      'Window': ['Analytics · Ad verification', 'Ad tools check it to prove an ad was actually on screen before charging for it. Analytics tools record it to see how people browse.'],
+      'Notch': ['Little direct use', 'Mostly a design detail. It does narrow down which phone you have, and newer phones suggest more spending power.'],
+      'Preferences': ['Mostly design', 'Mainly used to match the site to your settings. Trackers add it to your fingerprint because it rarely changes.'],
+      'Language': ['Google Ads · Meta · TikTok', 'Ads are targeted by language. A second language in your list hints at where you\'re from or where you\'ve lived.'],
+      'Keyboard': ['Fraud checks · Fingerprinting', 'A German keyboard on someone claiming to be in Brazil looks suspicious to fraud tools. It\'s also one more detail that makes you unique.'],
+      'Voices': ['Fingerprinting', 'Almost no marketing use. The list differs between systems, so trackers use it to tell devices apart.'],
+      'Processor & memory': ['LinkedIn · Fingerprinting', 'It shows whether your device is high-end or budget. LinkedIn\'s script was reported in 2026 to collect cores and memory, plus screen, time zone and battery.'],
+      'Battery': ['Meta · TikTok · Uber research', 'Meta and TikTok list battery level in their policies. Uber found people with a dying phone accept higher surge prices, though it says it doesn\'t price on it.'],
+      'Connection': ['Meta · Google Ads', 'Advertisers can show heavy video ads only on Wi-Fi and lighter ones on slow networks. Your network also hints at where you are.'],
+      'Input': ['Ad targeting · Bot detection', 'Touch or mouse separates phones from computers, a basic ad targeting choice. Fraud tools also check that a "phone" really behaves like one.'],
+      'Tilt': ['Fraud & bot detection', 'Real phones in real hands always move a little; bots don\'t. Research also shows sensor data can identify a single phone.'],
+      'Ad blocker': ['News sites · Publishers', 'Sites detect it to show "please turn off your ad blocker" walls. Studies have found these walls on 7% to 30% of popular sites.'],
+      'Your shield': ['Ad tech', 'Ad networks adapt to each browser: where Safari or Brave block tracking, they fall back on whatever signals are left.'],
+      'You came from': ['Analytics · Affiliates · Meta', 'This is how sites know which ad, post or link brought you, and who gets paid for it. Affiliate commissions depend on it.'],
+      'Cursor speed': ['Banks · Bot detection', 'Banks learn how you move your mouse and compare it every time you log in. Bots move in straight, perfect lines; people don\'t.'],
+      'Read so far': ['Analytics · Retargeting', 'It measures interest. Read the product page but didn\'t buy? That\'s who gets the "still thinking about it?" ads.'],
+      'Time here': ['Analytics · Retargeting', 'Time on page measures attention. Leaving and coming back shows what actually holds you.'],
+      'Your fingerprint': ['Ad networks · Fraud prevention', 'It recognizes you even after you clear cookies. Google\'s ad rules allow it since 2025; the UK privacy regulator called that irresponsible.'],
+      'Seen before': ['Retargeting · Analytics', 'Knowing you\'re back lets sites follow up: the shoes you looked at last week show up in your next ads.'],
+      'Extensions': ['LinkedIn · Scam sites', 'LinkedIn was reported in 2026 to check for over 6,000 extensions; it says it looks for scraping tools. Wallet extensions also attract scam sites.'],
+      'Installed fonts': ['Fingerprinting', 'Fonts reveal software you have, like Office or Adobe, which hints at your job and budget. They\'re also a classic fingerprint ingredient.'],
+      'Typing rhythm': ['Banks · TikTok', 'Banks use typing rhythm to confirm it\'s really you. TikTok\'s privacy policy lists "keystroke patterns or rhythms" in what it collects.'],
+      'Signed-in accounts': ['Closed', 'This used to tell sites which social networks you used, handy for targeting. Browsers closed it by restricting third-party cookies.'],
+    };
+
+    const cards = [];
+    function setFlipped(card, on, focus = false) {
+      card.el.classList.toggle('is-flipped', on);
+      card.front.inert = on;
+      card.back.inert = !on;
+      card.back.setAttribute('aria-hidden', String(!on));
+      card.front.setAttribute('aria-hidden', String(on));
+      if (focus) (on ? card.back.querySelector('.unflip') : card.front.querySelector('.flip'))?.focus({ preventScroll: true });
+    }
+
+    function makeCard(sig, parent) {
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = '<div class="card-inner"><div class="face front"><div class="card-label mono"><span></span></div><div class="card-value"></div><p class="card-note"></p></div></div>';
+      const inner = el.querySelector('.card-inner');
+      const front = el.querySelector('.front');
+      el.querySelector('.card-label span').textContent = sig.label;
+      if (sig.live) {
+        const tag = document.createElement('span');
+        tag.className = 'live';
+        tag.textContent = 'Live';
+        el.querySelector('.card-label').append(tag);
+      }
+      if (sig.extra) front.append(sig.extra());
+      if (sig.action) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'card-btn mono';
+        btn.textContent = sig.action.label;
+        btn.addEventListener('click', async () => { await sig.action.run(); btn.remove(); });
+        front.append(btn);
+      }
+      const use = USES[sig.label];
+      const back = document.createElement('div');
+      back.className = 'face back';
+      if (use) {
+        const flip = document.createElement('button');
+        flip.type = 'button';
+        flip.className = 'flip mono';
+        flip.textContent = 'Who uses this? ↻';
+        front.append(flip);
+        back.innerHTML = '<div class="card-label mono"><span>Who uses it</span></div><p class="who mono"></p><p class="use"></p><button class="unflip mono" type="button">← Back to the data</button>';
+        back.querySelector('.who').textContent = use[0];
+        back.querySelector('.use').textContent = use[1];
+        inner.append(back);
+      }
+      const valueEl = el.querySelector('.card-value');
+      const noteEl = el.querySelector('.card-note');
+      valueEl.textContent = sig.placeholder || '—';
+      if (sig.placeholder) noteEl.textContent = 'Run the tests to see this one.';
+      const card = {
+        sig, el, front, back, valueEl, noteEl, revealed: false, value: null, note: null,
+        text: () => card.value ?? sig.value(),
+        noteText: () => card.note ?? sig.note(),
+        reveal(delay = 0) {
+          card.revealed = true;
+          noteEl.textContent = card.noteText();
+          scramble(valueEl, card.text(), delay, () => card.refresh());
+        },
+        refresh() {
+          if (!card.revealed || !valueEl.dataset.done) return;
+          valueEl.textContent = card.text();
+          noteEl.textContent = card.noteText();
+        },
+      };
+      if (use) {
+        setFlipped(card, false);
+        front.querySelector('.flip').addEventListener('click', () => setFlipped(card, true, true));
+        back.querySelector('.unflip').addEventListener('click', () => setFlipped(card, false, true));
+      }
+      parent.append(el);
+      sig.init?.(card);
+      cards.push(card);
+      return card;
+    }
+
+    const grid = $('[data-grid]');
+    const mainCards = signals.map(sig => makeCard(sig, grid));
+
+    const io = new IntersectionObserver((entries) => {
+      let i = 0;
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        mainCards.find(c => c.el === entry.target).reveal(i++ * 70);
+      });
+    }, { threshold: .35 });
+    mainCards.forEach(c => io.observe(c.el));
+
+    // The Playground wave "talks" louder the faster you move; speed decays when you stop.
+    const cue = $('[data-cue]');
+    setInterval(() => {
+      cards.forEach(c => c.sig.live && c.refresh());
+      cue.style.setProperty('--amp', Math.min(1, .3 + live.speed / 2500).toFixed(2));
+      live.speed *= .7;
+    }, 250);
+
+    const flipAll = $('[data-flip-all]');
+    flipAll.addEventListener('click', () => {
+      const on = flipAll.getAttribute('aria-pressed') !== 'true';
+      flipAll.setAttribute('aria-pressed', String(on));
+      flipAll.textContent = on ? 'Back to the data ↻' : 'Follow the money ↻';
+      mainCards.forEach((c, i) => setTimeout(() => setFlipped(c, on), reduced ? 0 : i * 40));
+    });
+
+    // ───────── Tracker tests (only after consent) ─────────
+    const FONT_GROUPS = {
+      'Microsoft Office': ['Calibri', 'Cambria', 'Candara', 'Constantia', 'Corbel', 'Aptos'],
+      'Adobe apps': ['Myriad Pro', 'Minion Pro', 'Adobe Garamond Pro', 'Adobe Caslon Pro', 'Acumin Pro', 'Brush Script Std'],
+      'Developer fonts': ['Fira Code', 'Source Code Pro', 'Cascadia Code', 'Hack', 'Geist Mono', 'Monaspace Neon', 'IBM Plex Mono'],
+      'Designer fonts': ['Inter', 'Montserrat', 'Poppins', 'Open Sans', 'Lato', 'Space Grotesk', 'DM Sans'],
+    };
+
+    function detectFonts() {
+      const ctx = document.createElement('canvas').getContext('2d');
+      const sample = 'mmmmmmmmmmlli1WQ@#';
+      const bases = ['monospace', 'serif', 'sans-serif'];
+      const baseWidths = bases.map((b) => { ctx.font = `72px ${b}`; return ctx.measureText(sample).width; });
+      const has = (name) => bases.some((b, i) => { ctx.font = `72px "${name}", ${b}`; return ctx.measureText(sample).width !== baseWidths[i]; });
+      const groups = [];
+      const names = [];
+      let total = 0;
+      Object.entries(FONT_GROUPS).forEach(([group, list]) => {
+        total += list.length;
+        const hit = list.filter(has);
+        if (hit.length) { groups.push(group); names.push(...hit); }
+      });
+      return { groups, names, total };
+    }
+
+    function detectExtensions() {
+      const w = window;
+      const d = document;
+      const found = [];
+      if (d.body.hasAttribute('data-gr-ext-installed') || d.querySelector('grammarly-desktop-integration')) found.push('Grammarly');
+      if (d.body.hasAttribute('data-lt-installed')) found.push('LanguageTool');
+      if (d.querySelector('meta[name="darkreader"]') || root.hasAttribute('data-darkreader-scheme')) found.push('Dark Reader');
+      if (d.querySelector('com-1password-button, com-1password-menu')) found.push('1Password');
+      if (d.querySelector('[data-lastpass-root], [data-lastpass-icon-root]')) found.push('LastPass');
+      if (w.__REACT_DEVTOOLS_GLOBAL_HOOK__) found.push('React DevTools');
+      if (w.__VUE_DEVTOOLS_GLOBAL_HOOK__) found.push('Vue DevTools');
+      if (w.__REDUX_DEVTOOLS_EXTENSION__) found.push('Redux DevTools');
+      if (w.ethereum) found.push(w.ethereum.isBraveWallet ? 'Brave Wallet' : w.ethereum.isMetaMask ? 'MetaMask' : 'A crypto wallet');
+      if (w.phantom) found.push('Phantom');
+      if (root.classList.contains('translated-ltr') || root.classList.contains('translated-rtl')) found.push('Google Translate');
+      return [...new Set(found)];
+    }
+
+    async function fingerprint(fontNames) {
+      const c = document.createElement('canvas');
+      c.width = 280;
+      c.height = 60;
+      const x = c.getContext('2d');
+      x.textBaseline = 'top';
+      x.font = '18px Arial';
+      x.fillStyle = '#f60';
+      x.fillRect(100, 1, 62, 20);
+      x.fillStyle = '#069';
+      x.fillText('Fran Cortez <canvas> 🧭', 2, 15);
+      x.fillStyle = 'rgba(102, 204, 0, .7)';
+      x.fillText('Fran Cortez <canvas> 🧭', 4, 17);
+      x.beginPath();
+      x.arc(240, 30, 20, 0, Math.PI * 2);
+      x.stroke();
+      const parts = [
+        c.toDataURL(), gpu?.name, screen.width, screen.height, screen.colorDepth, devicePixelRatio,
+        tz, (navigator.languages || []).join(','), cores, memory, navigator.maxTouchPoints, fontNames.join(','),
+      ].join('|');
+      let hex;
+      if (window.crypto?.subtle) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(parts));
+        hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+      } else {
+        // FNV-1a fallback for insecure contexts
+        let h = 0x811c9dc5;
+        for (let i = 0; i < parts.length; i++) { h ^= parts.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+        hex = h.toString(16).padStart(8, '0').repeat(2);
+      }
+      return hex.slice(0, 12).toUpperCase().match(/.{4}/g).join(' ');
+    }
+
+    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    function ago(ts) {
+      const s = Math.round((ts - Date.now()) / 1000);
+      const steps = [[60, 'second'], [3600, 'minute'], [86400, 'hour'], [604800, 'day'], [Infinity, 'week']];
+      const div = { second: 1, minute: 60, hour: 3600, day: 86400, week: 604800 };
+      const [, unit] = steps.find(([lim]) => Math.abs(s) < lim);
+      return rtf.format(Math.round(s / div[unit]), unit);
+    }
+
+    function rememberVisit(fp) {
+      let rec = null;
+      try { rec = JSON.parse(store.get('lab:seen')); } catch (e) {}
+      let counted = false;
+      try { counted = sessionStorage.getItem('lab:counted') === '1'; } catch (e) {}
+      const now = Date.now();
+      if (!rec) {
+        rec = { fp, visits: 1, last: now };
+      } else if (!counted) {
+        rec.prev = { last: rec.last, fp: rec.fp };
+        rec.visits += 1;
+        rec.last = now;
+        rec.fp = fp;
+      }
+      store.set('lab:seen', JSON.stringify(rec));
+      try { sessionStorage.setItem('lab:counted', '1'); } catch (e) {}
+      return rec;
+    }
+
+    const vaultState = { ran: false, fp: '', fonts: null, ext: [], rec: null, gaps: [] };
+
+    const typing = (() => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:grid;gap:10px';
+      const input = document.createElement('input');
+      input.className = 'typing';
+      input.type = 'text';
+      input.placeholder = 'Type anything here…';
+      input.setAttribute('aria-label', 'Type anything to measure your typing rhythm');
+      input.autocomplete = 'off';
+      const bars = document.createElement('div');
+      bars.className = 'bars';
+      bars.setAttribute('aria-hidden', 'true');
+      wrap.append(input, bars);
+      let lastKey = 0;
+      input.addEventListener('keydown', (e) => {
+        if (e.key.length !== 1 && e.key !== 'Backspace') return;
+        const now = performance.now();
+        if (lastKey && now - lastKey < 1500) {
+          vaultState.gaps.push(now - lastKey);
+          vaultState.gaps = vaultState.gaps.slice(-32);
+          const max = Math.max(...vaultState.gaps);
+          bars.replaceChildren(...vaultState.gaps.map((g) => {
+            const s = document.createElement('span');
+            s.style.height = `${Math.max(8, (g / max) * 100)}%`;
+            return s;
+          }));
+          typingCard.refresh();
+        }
+        lastKey = now;
+      });
+      return wrap;
+    })();
+
+    const trackerSignals = [
+      {
+        label: 'Your fingerprint',
+        placeholder: '7F3A 91C2 0BE4',
+        value: () => vaultState.fp,
+        note: () => isSafari || navigator.brave
+          ? `${browser} adds noise, so this changes between sessions. That's the protection working.`
+          : 'Built from your graphics, fonts, screen and settings. Clear your cookies or open a private window: same code.',
+      },
+      {
+        label: 'Seen before',
+        placeholder: 'Visit #3',
+        value: () => vaultState.rec?.visits > 1 ? `Visit #${vaultState.rec.visits}` : 'First visit',
+        note: () => {
+          const r = vaultState.rec;
+          if (!r?.prev) return 'Come back tomorrow. I\'ll recognize this browser. (Stored here only, because you said yes.)';
+          const same = r.prev.fp === r.fp ? 'Same fingerprint as then.' : 'Your fingerprint changed since then.';
+          return `Last time: ${ago(r.prev.last)}. ${same} Real trackers keep this on their servers.`;
+        },
+      },
+      {
+        label: 'Extensions',
+        placeholder: 'Grammarly · MetaMask',
+        value: () => vaultState.ext.length ? vaultState.ext.slice(0, 3).join(' · ') : 'None I can see',
+        note: () => vaultState.ext.length
+          ? `Spotted from the traces they leave in the page${vaultState.ext.length > 3 ? `, plus ${vaultState.ext.length - 3} more` : ''}. Wallets are a favourite target.`
+          : 'Many extensions leave traces in every page. Yours, if any, kept quiet.',
+      },
+      {
+        label: 'Installed fonts',
+        placeholder: 'Office · Adobe',
+        value: () => vaultState.fonts?.groups.length ? vaultState.fonts.groups.join(' · ') : 'System only',
+        note: () => {
+          const f = vaultState.fonts;
+          if (!f) return '';
+          if (!f.names.length) return `I tested ${f.total} fonts that apps install. ${isFirefox || isSafari ? `${browser} only shows system fonts. Nice.` : 'None showed up.'}`;
+          return `Found ${f.names.length} of ${f.total} I tested: ${f.names.slice(0, 4).join(', ')}${f.names.length > 4 ? '…' : ''}. Fonts reveal the software you pay for.`;
+        },
+      },
+      {
+        label: 'Typing rhythm',
+        placeholder: '142 ms ± 38',
+        live: true,
+        extra: () => typing,
+        value: () => {
+          const g = vaultState.gaps;
+          if (g.length < 3) return 'Type to see it';
+          const mean = g.reduce((a, b) => a + b, 0) / g.length;
+          const sd = Math.sqrt(g.reduce((a, b) => a + (b - mean) ** 2, 0) / g.length);
+          return `${Math.round(mean)} ms ± ${Math.round(sd)}`;
+        },
+        note: () => 'Only the gaps between keys, never the keys. Banks use rhythm like this to spot bots and impostors.',
+      },
+      {
+        label: 'Signed-in accounts',
+        placeholder: 'Gmail · Facebook',
+        value: () => 'Closed',
+        note: () => 'This trick used to reveal if you were signed in to Gmail or Facebook. Cookie rules killed it. Good.',
+      },
+    ];
+
+    const vault = $('[data-vault]');
+    const vaultGrid = $('[data-vault-grid]');
+    const vaultCards = trackerSignals.map(sig => makeCard(sig, vaultGrid));
+    const typingCard = vaultCards[4];
+    const gateTitle = $('[data-gate-title]');
+    const gateCopy = $('[data-gate-copy]');
+    const gateCopyDefault = gateCopy.textContent;
+    const forgetWrap = $('[data-forget-wrap]');
+    const declineBtn = $('[data-decline]');
+
+    async function runTrackerTests() {
+      vaultState.fonts = detectFonts();
+      vaultState.ext = detectExtensions();
+      vaultState.fp = await fingerprint(vaultState.fonts.names);
+      vaultState.rec = rememberVisit(vaultState.fp);
+      vault.classList.add('is-open');
+      vaultGrid.inert = false;
+      vaultGrid.removeAttribute('aria-hidden');
+      forgetWrap.hidden = false;
+      vaultCards.forEach((c, i) => c.reveal(i * 90));
+    }
+
+    $('[data-consent]').addEventListener('click', () => {
+      store.set('lab:consent', '1');
+      runTrackerTests();
+    });
+
+    declineBtn.addEventListener('click', () => {
+      gateTitle.textContent = 'Fair enough.';
+      gateCopy.textContent = 'That\'s the right instinct. Most sites run these without asking. Change your mind any time.';
+      declineBtn.hidden = true;
+    });
+
+    $('[data-forget]').addEventListener('click', () => {
+      store.del('lab:seen');
+      store.del('lab:consent');
+      try { sessionStorage.removeItem('lab:counted'); } catch (e) {}
+      vault.classList.remove('is-open');
+      vaultGrid.inert = true;
+      vaultGrid.setAttribute('aria-hidden', 'true');
+      forgetWrap.hidden = true;
+      gateTitle.textContent = 'Run the tracker tests?';
+      gateCopy.textContent = gateCopyDefault;
+      declineBtn.hidden = false;
+      vaultCards.forEach((c) => {
+        c.revealed = false;
+        c.valueEl.textContent = c.sig.placeholder;
+        c.noteEl.textContent = 'Run the tests to see this one.';
+      });
+      toast('Forgotten. Nothing about you is stored here now.');
+    });
+
+    // Returning visitors who already said yes go straight to the results.
+    if (store.get('lab:consent') === '1') {
+      const reveal = new IntersectionObserver((entries) => {
+        if (!entries.some(e => e.isIntersecting)) return;
+        reveal.disconnect();
+        runTrackerTests();
+      }, { threshold: .1 });
+      reveal.observe(vault);
+    }
+
+    startIntro();
+  })();
+  </script>
+</body>
+</html>
