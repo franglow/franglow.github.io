@@ -206,22 +206,63 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
       border-top: 1px solid var(--line);
       border-left: 1px solid var(--line);
     }
+    /* Each card has two faces: the data, and who uses it commercially. Flipping keeps every card the same size. */
     .card {
       position: relative;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
       min-height: 190px;
-      padding: 22px;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
+      perspective: 1400px;
       transition: background .3s;
     }
     .card:hover { background: var(--navy-2); }
+    .card-inner {
+      position: relative;
+      flex: 1;
+      transform-style: preserve-3d;
+      transition: transform .75s var(--ease-out);
+    }
+    .card.is-flipped .card-inner { transform: rotateY(180deg); }
+    .face {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 22px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    .front { height: 100%; }
+    .back {
+      position: absolute;
+      inset: 0;
+      gap: 6px;
+      padding-block: 16px 14px;
+      transform: rotateY(180deg);
+      overflow-y: auto;
+      background: color-mix(in oklch, var(--mint) 7%, var(--navy));
+    }
+    .who { margin: 0; color: var(--mint); text-transform: uppercase; }
+    .use { margin: 0; color: var(--white); font-size: .875rem; line-height: 1.45; }
+    .flip, .unflip {
+      align-self: flex-start;
+      margin-top: 4px;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--mint);
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in oklch, var(--mint) 40%, transparent);
+      text-underline-offset: 4px;
+    }
+    .unflip { margin-top: auto; }
+    .flip:hover, .unflip:hover { text-decoration-color: var(--mint); }
+    .flip-all { margin: -32px 0 32px; }
     .card-label { color: var(--muted); text-transform: uppercase; display: flex; justify-content: space-between; gap: 8px; }
     .card-label .live { color: var(--mint); }
     .card-label .live::before {
@@ -458,7 +499,8 @@
       <div class="wrap">
         <p class="kicker mono">01 — No permission asked</p>
         <h2 id="browser-title">Your browser<br>is talking.</h2>
-        <p class="lede">Every site you open gets this list for free. Here is yours, read live. It's computed on your device and never leaves it: no server, no cookies, no tracking.</p>
+        <p class="lede">Every site you open gets this list for free. Here is yours, read live. It's computed on your device and never leaves it: no server, no cookies, no tracking. Flip any card to see who uses that detail, and what for.</p>
+        <button class="btn btn-ghost flip-all" type="button" aria-pressed="false" data-flip-all>Follow the money ↻</button>
         <div class="grid" data-grid></div>
       </div>
     </section>
@@ -536,6 +578,11 @@
             <span class="mono">06</span>
             <h3>Built with AI as the default.</h3>
             <p>I direct the tools, review what they produce, and own what ships. The concept, the limits and the trade-offs on this page are decisions, not defaults.</p>
+          </article>
+          <article>
+            <span class="mono">07</span>
+            <h3>Every "who uses it" has a source.</h3>
+            <p>Company policies and reporting, as of October 2026: <a href="https://www.nbcnews.com/id/wbna47956454">Orbitz and Mac users</a>, <a href="https://www.techradar.com/news/car-tech/you-re-more-likely-to-pay-uber-s-surge-prices-on-a-low-battery-1321900">Uber and low batteries</a>, <a href="https://english.factcrescendo.com/2025/01/15/can-tiktok-track-keystrokes-or-taps-made-by-a-user/">TikTok's device data</a>, <a href="https://opensource.fb.com/legal/privacy/">Meta's device data</a>, <a href="https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2024/12/our-response-to-google-s-policy-change-on-fingerprinting/">Google and fingerprinting</a>, <a href="https://www.tomshardware.com/software/browsers/linkedin-scans-visitors-browsers-for-over-6000-chrome-extensions-and-collects-device-data">LinkedIn and extensions</a>, <a href="https://support.google.com/google-ads/answer/7101715">Google Ads device targeting</a>, <a href="https://www.pymnts.com/fraud-prevention/2018/banks-biometrics-security-fraud-biocatch-alisdair-faulkner-threatmetrix/">banks and typing rhythm</a>, <a href="https://www.ieee-security.org/TC/SP2019/papers/405.pdf">phone sensor fingerprints</a>.</p>
           </article>
         </div>
       </div>
@@ -1188,11 +1235,55 @@
       requestAnimationFrame(tick);
     }
 
+    // Who uses each detail commercially, in plain words. Sources are listed in "How this works".
+    const USES = {
+      'Where & when': ['Google Ads · Meta · TikTok', 'Ads are aimed by place and time of day: a coffee deal at 8 a.m. in your city, not at midnight somewhere else. TikTok\'s policy lists your time zone.'],
+      'Your device': ['Meta · Google Ads', 'Advertisers can target specific phone models. A brand-new flagship hints at a bigger budget, so it can attract pricier offers.'],
+      'System': ['Travel sites · Ad networks', 'In 2012, Orbitz showed Mac users pricier hotels because Mac users spent more per night. Your system is a shortcut to guess your budget.'],
+      'Graphics chip': ['Fingerprinting · Fraud tools', 'Your chip is one piece of a fingerprint that recognizes you without cookies. Google\'s ad rules have allowed fingerprinting since 2025.'],
+      'Camera & mic': ['Video apps · Fingerprinting', 'Video-call sites check this before asking for access. Trackers use which devices you have as one more detail that makes you unique.'],
+      'Screen': ['Meta · TikTok · Fingerprinting', 'Sites fit ads and layouts to it. Meta and TikTok list screen details in what they collect, and it helps tell one device from another.'],
+      'Window': ['Analytics · Ad verification', 'Ad tools check it to prove an ad was actually on screen before charging for it. Analytics tools record it to see how people browse.'],
+      'Notch': ['Little direct use', 'Mostly a design detail. It does narrow down which phone you have, and newer phones suggest more spending power.'],
+      'Preferences': ['Mostly design', 'Mainly used to match the site to your settings. Trackers add it to your fingerprint because it rarely changes.'],
+      'Language': ['Google Ads · Meta · TikTok', 'Ads are targeted by language. A second language in your list hints at where you\'re from or where you\'ve lived.'],
+      'Keyboard': ['Fraud checks · Fingerprinting', 'A German keyboard on someone claiming to be in Brazil looks suspicious to fraud tools. It\'s also one more detail that makes you unique.'],
+      'Voices': ['Fingerprinting', 'Almost no marketing use. The list differs between systems, so trackers use it to tell devices apart.'],
+      'Processor & memory': ['LinkedIn · Fingerprinting', 'It shows whether your device is high-end or budget. LinkedIn\'s script was reported in 2026 to collect cores and memory, plus screen, time zone and battery.'],
+      'Battery': ['Meta · TikTok · Uber research', 'Meta and TikTok list battery level in their policies. Uber found people with a dying phone accept higher surge prices, though it says it doesn\'t price on it.'],
+      'Connection': ['Meta · Google Ads', 'Advertisers can show heavy video ads only on Wi-Fi and lighter ones on slow networks. Your network also hints at where you are.'],
+      'Input': ['Ad targeting · Bot detection', 'Touch or mouse separates phones from computers, a basic ad targeting choice. Fraud tools also check that a "phone" really behaves like one.'],
+      'Tilt': ['Fraud & bot detection', 'Real phones in real hands always move a little; bots don\'t. Research also shows sensor data can identify a single phone.'],
+      'Ad blocker': ['News sites · Publishers', 'Sites detect it to show "please turn off your ad blocker" walls. Studies have found these walls on 7% to 30% of popular sites.'],
+      'Your shield': ['Ad tech', 'Ad networks adapt to each browser: where Safari or Brave block tracking, they fall back on whatever signals are left.'],
+      'You came from': ['Analytics · Affiliates · Meta', 'This is how sites know which ad, post or link brought you, and who gets paid for it. Affiliate commissions depend on it.'],
+      'Cursor speed': ['Banks · Bot detection', 'Banks learn how you move your mouse and compare it every time you log in. Bots move in straight, perfect lines; people don\'t.'],
+      'Read so far': ['Analytics · Retargeting', 'It measures interest. Read the product page but didn\'t buy? That\'s who gets the "still thinking about it?" ads.'],
+      'Time here': ['Analytics · Retargeting', 'Time on page measures attention. Leaving and coming back shows what actually holds you.'],
+      'Your fingerprint': ['Ad networks · Fraud prevention', 'It recognizes you even after you clear cookies. Google\'s ad rules allow it since 2025; the UK privacy regulator called that irresponsible.'],
+      'Seen before': ['Retargeting · Analytics', 'Knowing you\'re back lets sites follow up: the shoes you looked at last week show up in your next ads.'],
+      'Extensions': ['LinkedIn · Scam sites', 'LinkedIn was reported in 2026 to check for over 6,000 extensions; it says it looks for scraping tools. Wallet extensions also attract scam sites.'],
+      'Installed fonts': ['Fingerprinting', 'Fonts reveal software you have, like Office or Adobe, which hints at your job and budget. They\'re also a classic fingerprint ingredient.'],
+      'Typing rhythm': ['Banks · TikTok', 'Banks use typing rhythm to confirm it\'s really you. TikTok\'s privacy policy lists "keystroke patterns or rhythms" in what it collects.'],
+      'Signed-in accounts': ['Closed', 'This used to tell sites which social networks you used, handy for targeting. Browsers closed it by restricting third-party cookies.'],
+    };
+
     const cards = [];
+    function setFlipped(card, on, focus = false) {
+      card.el.classList.toggle('is-flipped', on);
+      card.front.inert = on;
+      card.back.inert = !on;
+      card.back.setAttribute('aria-hidden', String(!on));
+      card.front.setAttribute('aria-hidden', String(on));
+      if (focus) (on ? card.back.querySelector('.unflip') : card.front.querySelector('.flip'))?.focus({ preventScroll: true });
+    }
+
     function makeCard(sig, parent) {
       const el = document.createElement('article');
       el.className = 'card';
-      el.innerHTML = '<div class="card-label mono"><span></span></div><div class="card-value"></div><p class="card-note"></p>';
+      el.innerHTML = '<div class="card-inner"><div class="face front"><div class="card-label mono"><span></span></div><div class="card-value"></div><p class="card-note"></p></div></div>';
+      const inner = el.querySelector('.card-inner');
+      const front = el.querySelector('.front');
       el.querySelector('.card-label span').textContent = sig.label;
       if (sig.live) {
         const tag = document.createElement('span');
@@ -1200,21 +1291,35 @@
         tag.textContent = 'Live';
         el.querySelector('.card-label').append(tag);
       }
-      if (sig.extra) el.append(sig.extra());
+      if (sig.extra) front.append(sig.extra());
       if (sig.action) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'card-btn mono';
         btn.textContent = sig.action.label;
         btn.addEventListener('click', async () => { await sig.action.run(); btn.remove(); });
-        el.append(btn);
+        front.append(btn);
+      }
+      const use = USES[sig.label];
+      const back = document.createElement('div');
+      back.className = 'face back';
+      if (use) {
+        const flip = document.createElement('button');
+        flip.type = 'button';
+        flip.className = 'flip mono';
+        flip.textContent = 'Who uses this? ↻';
+        front.append(flip);
+        back.innerHTML = '<div class="card-label mono"><span>Who uses it</span></div><p class="who mono"></p><p class="use"></p><button class="unflip mono" type="button">← Back to the data</button>';
+        back.querySelector('.who').textContent = use[0];
+        back.querySelector('.use').textContent = use[1];
+        inner.append(back);
       }
       const valueEl = el.querySelector('.card-value');
       const noteEl = el.querySelector('.card-note');
       valueEl.textContent = sig.placeholder || '—';
       if (sig.placeholder) noteEl.textContent = 'Run the tests to see this one.';
       const card = {
-        sig, el, valueEl, noteEl, revealed: false, value: null, note: null,
+        sig, el, front, back, valueEl, noteEl, revealed: false, value: null, note: null,
         text: () => card.value ?? sig.value(),
         noteText: () => card.note ?? sig.note(),
         reveal(delay = 0) {
@@ -1228,6 +1333,11 @@
           noteEl.textContent = card.noteText();
         },
       };
+      if (use) {
+        setFlipped(card, false);
+        front.querySelector('.flip').addEventListener('click', () => setFlipped(card, true, true));
+        back.querySelector('.unflip').addEventListener('click', () => setFlipped(card, false, true));
+      }
       parent.append(el);
       sig.init?.(card);
       cards.push(card);
@@ -1248,6 +1358,14 @@
     mainCards.forEach(c => io.observe(c.el));
 
     setInterval(() => cards.forEach(c => c.sig.live && c.refresh()), 250);
+
+    const flipAll = $('[data-flip-all]');
+    flipAll.addEventListener('click', () => {
+      const on = flipAll.getAttribute('aria-pressed') !== 'true';
+      flipAll.setAttribute('aria-pressed', String(on));
+      flipAll.textContent = on ? 'Back to the data ↻' : 'Follow the money ↻';
+      mainCards.forEach((c, i) => setTimeout(() => setFlipped(c, on), reduced ? 0 : i * 40));
+    });
 
     // ───────── Tracker tests (only after consent) ─────────
     const FONT_GROUPS = {
